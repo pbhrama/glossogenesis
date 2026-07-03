@@ -125,13 +125,24 @@ theater. Constraints need teeth or the demo is fake.
      test with curl, what to capture for the submission's proof-of-deployment requirement).
    - requirements.txt now includes redis>=5.0.0 (real prod dep); requirements-dev.txt adds
      fakeredis (local testing only, not deployed).
-   - NOT YET COMMITTED to git. NOT YET ACTUALLY DEPLOYED -- that step is on the user, per their
-     choice above. No real Alibaba Cloud resources have been created yet.
-14. NEXT UP — commit the cloud deployment scaffolding. Then: user needs to actually run
-   DEPLOY.md's steps themselves to get real proof-of-deployment for submission. Remaining after
-   that: dashboard (live dictionary + convergence graph), submission assets (public repo +
-   license, architecture diagram, demo video, description), and the deferred noise-reduction
-   reps (item 12) closer to shipping.
+   - Committed to git (commit d9bd077, no co-author line per user preference -- see
+     "Preferences" below).
+15. PAUSED — actual deployment (running DEPLOY.md's steps) is blocked: user could not find
+   Alibaba Cloud's AccessKey Management page. Turned out they were on the Qwen Cloud product
+   dashboard (dashscope/model billing portal), not the full Alibaba Cloud console -- those are
+   separate sites. Pointed them to https://home.console.aliyun.com as the real console entry
+   point, but they still couldn't locate it there either. USER DECIDED TO SET THIS ASIDE FOR NOW
+   and move on to other work. Cloud deployment code (fc_handler.py, store_redis.py, s.yaml,
+   DEPLOY.md) is done and tested locally -- only the actual `s deploy` run (which requires the
+   user's own AccessKey) remains, whenever they want to pick it back up.
+16. NEXT UP — user chose to defer cloud deployment and work on other stuff instead. Candidates:
+   dashboard (live dictionary + convergence graph), submission assets (public repo + license,
+   architecture diagram, demo video, description), and the deferred noise-reduction reps
+   (item 12). Ask user which one when resuming.
+
+## Preferences
+- Do NOT add a "Co-Authored-By: Claude..." trailer to git commit messages in this repo (user
+  asked to remove it explicitly -- "get rid of any mention of claude").
 
 ## Submission requirements (don't forget)
 - Public repo w/ OSS license visible in About section
