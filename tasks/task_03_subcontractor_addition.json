@@ -1,0 +1,4 @@
+{
+  "id": "task_03_subcontractor_addition",
+  "description": "Procurement-agent's approved vendor wants to add a new subcontractor mid-contract to handle overflow capacity for a $200k order. Compliance-agent requires any subcontractor touching customer data to pass the same risk-tier review as the primary vendor, which normally takes 6 weeks, but the order ships in 10 days. Negotiate a path both agents can agree to (e.g. scoped data access, interim monitoring, phased subcontractor approval) within the round budget."
+}

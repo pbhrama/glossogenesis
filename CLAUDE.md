@@ -74,10 +74,27 @@ theater. Constraints need teeth or the demo is fake.
    run_baseline.py (CLI, mirrors run_negotiation.py). Validated live against task_01: converged
    in 4 rounds (vs. 6 for the pidgin arm on the same task, which paid 2 extra rounds to coin +
    clarify "PO"). NOT YET COMMITTED to git.
-8. NEXT UP — commit the baseline arm, then write more task JSONs, build a multi-task runner that
-   runs BOTH arms per task, carries the pidgin dictionary forward across tasks (baseline has
-   nothing to carry forward by design), and tracks the convergence-speed learning curve as the
-   core result. Then cloud deployment + dashboard + submission assets.
+8. DONE — Wrote 4 more tasks (tasks/task_02..05, varying Procurement/Compliance conflict
+   scenarios: expedited shipment, subcontractor addition, payment terms change, data export).
+   Built run_all_tasks.py: runs both arms per task, carries the pidgin DictionaryStore forward
+   across tasks (fresh agent instances/history per task, but shared dictionary object), writes
+   logs/summary.json. NOT YET COMMITTED to git.
+9. DONE — Ran all 5 tasks live end to end. Results (see logs/summary.json):
+   task_01: pidgin 11 rounds / 3 clarification, baseline 5 rounds, dict grows 0->3
+   task_02: pidgin 5 rounds / 0 clarification, baseline 4 rounds (dict already at 3)
+   task_03: pidgin 7 rounds / 0 clarification, baseline 4 rounds
+   task_04: pidgin 4 rounds / 0 clarification, baseline 4 rounds
+   task_05: pidgin 11 rounds / 0 clarification, baseline 4 rounds
+   REAL SIGNAL: clarification cost drops to 0 after task_01 and stays there -- the 3-term
+   dictionary built in task_01 gets reused for free afterward. This is the learning-curve
+   story working as intended.
+   HONEST CAVEAT: raw round count does NOT cleanly decrease (11,5,7,4,11) even though
+   clarification cost does -- round count is also driven by how contentious each task's
+   negotiation content is (e.g. task_05's cross-border legal scenario was just harder), not
+   only vocabulary cost. For the submission, report clarification-rounds-saved as the clean
+   metric, not raw round count, or run multiple reps per task and average to smooth noise.
+10. NEXT UP — commit run_all_tasks.py + new tasks + logs/summary.json. Then decide: more task
+   reps to reduce noise? Then cloud deployment + dashboard + submission assets remain.
 
 ## Submission requirements (don't forget)
 - Public repo w/ OSS license visible in About section

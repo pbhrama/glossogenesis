@@ -1,0 +1,47 @@
+[
+  {
+    "task_id": "task_01_vendor_onboarding",
+    "dictionary_size_before": 0,
+    "pidgin_rounds": 11,
+    "pidgin_converged": true,
+    "pidgin_clarification_rounds": 3,
+    "baseline_rounds": 5,
+    "baseline_converged": true
+  },
+  {
+    "task_id": "task_02_expedited_shipment",
+    "dictionary_size_before": 3,
+    "pidgin_rounds": 5,
+    "pidgin_converged": true,
+    "pidgin_clarification_rounds": 0,
+    "baseline_rounds": 4,
+    "baseline_converged": true
+  },
+  {
+    "task_id": "task_03_subcontractor_addition",
+    "dictionary_size_before": 3,
+    "pidgin_rounds": 7,
+    "pidgin_converged": true,
+    "pidgin_clarification_rounds": 0,
+    "baseline_rounds": 4,
+    "baseline_converged": true
+  },
+  {
+    "task_id": "task_04_payment_terms_change",
+    "dictionary_size_before": 3,
+    "pidgin_rounds": 4,
+    "pidgin_converged": true,
+    "pidgin_clarification_rounds": 0,
+    "baseline_rounds": 4,
+    "baseline_converged": true
+  },
+  {
+    "task_id": "task_05_data_export_request",
+    "dictionary_size_before": 3,
+    "pidgin_rounds": 11,
+    "pidgin_converged": true,
+    "pidgin_clarification_rounds": 0,
+    "baseline_rounds": 4,
+    "baseline_converged": true
+  }
+]

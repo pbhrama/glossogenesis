@@ -1,0 +1,4 @@
+{
+  "id": "task_05_data_export_request",
+  "description": "Procurement-agent needs to send historical purchase-order data to a new overseas vendor as part of onboarding due diligence, on a 3-day deadline tied to a contract signing window. Compliance-agent flags that the destination jurisdiction lacks an adequacy agreement, so the export normally requires standard contractual clauses to be executed first, which takes longer than 3 days. Negotiate a path both agents can agree to (e.g. redacted/minimized data set, staged export, interim legal safeguard) within the round budget."
+}

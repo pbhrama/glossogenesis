@@ -1,0 +1,4 @@
+{
+  "id": "task_02_expedited_shipment",
+  "description": "Procurement-agent needs to expedite a shipment from an existing approved vendor to meet a customer deadline in 5 days, which requires bypassing the vendor's usual 2-week lead time via air freight at 3x cost. Compliance-agent must sign off, but expedited vendor changes outside the normal change-control window require a documented risk exception. Negotiate a path both agents can agree to (e.g. conditional exception, added monitoring, cost cap) within the round budget."
+}
