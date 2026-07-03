@@ -60,8 +60,10 @@ class TurnController:
             return ""
         pending = ", ".join(f'"{t}"' for t in self.sealed_terms)
         return (f"\n\n[SYSTEM NOTE: the terms {pending} have been used but not yet defined "
-                f"for you. If you need to know what they mean, explicitly ask "
-                f"'what does <term> mean?' in your message -- this costs a round.]")
+                f"for you. If you need to know what one means, put it in your \"asking_about\" "
+                f"list this turn -- you'll get the real definition next turn. This costs a "
+                f"round, so only ask if you actually need it; do not guess at the meaning and "
+                f"use the term as if you already knew it.]")
 
     def run(self) -> NegotiationResult:
         speakers = [(self.agent_a, self.agent_b), (self.agent_b, self.agent_a)]
@@ -81,9 +83,11 @@ class TurnController:
             output = speaker.send(self.token_budget, dict_block, self.task, msg_to_send)
             message = output["message"]
             new_terms = output.get("new_terms", [])
+            asking_about = output.get("asking_about", [])
             agree = bool(output.get("agree", False))
 
             forced_clarification = False
+            newly_coined = set()
             for nt in new_terms:
                 term = nt.get("term", "").strip()
                 definition = nt.get("definition", "").strip()
@@ -92,16 +96,20 @@ class TurnController:
                 if term in self.sealed_terms:
                     continue
                 self.sealed_terms[term] = {"definition": definition, "coined_by": speaker.name}
+                newly_coined.add(term)
                 forced_clarification = True
 
-            # If the incoming message asked to clarify a sealed term, reveal it now
-            # and move it into the shared dictionary -- this consumes the "extra round".
-            if incoming is not None:
-                asked = [t for t in self.sealed_terms if t.lower() in incoming.lower()]
-                for term in asked:
-                    entry = self.sealed_terms.pop(term)
-                    self.dictionary.add(term, entry["definition"], entry["coined_by"], round_num)
-                    clarification_rounds += 1
+            # Only an EXPLICIT request via "asking_about" reveals a sealed term -- this is what
+            # gives the "extra round" cost real teeth. A term merely reappearing in conversation
+            # text (e.g. because the coiner used it in their own message) must NOT auto-resolve
+            # it; a speaker also can't resolve a term they just coined this same turn.
+            for term in asking_about:
+                term = term.strip()
+                if term not in self.sealed_terms or term in newly_coined:
+                    continue
+                entry = self.sealed_terms.pop(term)
+                self.dictionary.add(term, entry["definition"], entry["coined_by"], round_num)
+                clarification_rounds += 1
 
             entry = RoundLog(
                 round_num=round_num,

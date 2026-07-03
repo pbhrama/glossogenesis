@@ -9,6 +9,7 @@ You MUST respond with a single JSON object, no prose outside it, matching exactl
 {{
   "message": "<your visible message to the other agent, <= {budget} tokens>",
   "new_terms": [{{"term": "<short coined term>", "definition": "<what it means, kept SEALED>"}}],
+  "asking_about": ["<sealed term you are explicitly requesting the definition of, if any>"],
   "agree": <true|false>
 }}
 - "new_terms" lists any NEW compressed terms you use in "message" that are not yet in the
@@ -18,6 +19,11 @@ You MUST respond with a single JSON object, no prose outside it, matching exactl
   asking before they can use it.
 - If "message" only uses terms already in the shared dictionary (or plain language), leave
   "new_terms" empty.
+- "asking_about" is how you REQUEST a definition for a sealed term you don't know yet -- list
+  it there (and say so in "message", e.g. "what does X mean?") and you'll receive the real
+  definition on your NEXT turn. Do not guess at a sealed term's meaning and use it as if you
+  already knew it -- that defeats the negotiation's constraint. Leave "asking_about" empty if
+  you are not requesting any definition this turn.
 - Set "agree" true only when you are accepting the current proposal as final.
 """
 
@@ -101,9 +107,10 @@ class QwenAgent:
         try:
             parsed = json.loads(raw)
         except json.JSONDecodeError:
-            parsed = {"message": raw, "new_terms": [], "agree": False}
+            parsed = {"message": raw, "new_terms": [], "asking_about": [], "agree": False}
         parsed.setdefault("message", "")
         parsed.setdefault("new_terms", [])
+        parsed.setdefault("asking_about", [])
         parsed.setdefault("agree", False)
         return parsed
 

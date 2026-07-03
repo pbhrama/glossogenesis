@@ -21,20 +21,55 @@ them to build a shared compressed "pidgin" dictionary over rounds.
 
 ## Stack
 - Model: Qwen Cloud, OpenAI-compatible SDK, base_url https://dashscope-intl.aliyuncs.com/compatible-mode/v1
-- API key in DASHSCOPE_API_KEY env var (already set)
-- Models: qwen3.7-plus and/or qwen3.6-flash (deciding if agents should use same or asymmetric models)
+- API key in DASHSCOPE_API_KEY env var — NOT persisted anywhere in repo/shell profile; must be
+  exported manually each session (key lives in Qwen Cloud dashboard > API Keys, labeled
+  "Devpost Hackathon", Pay-As-You-Go, format looks like `sk-ws-...` — that's normal for this
+  provider, don't panic and treat it as suspicious again)
+- Models: DECIDED — same model (qwen-plus) for both agents. Rationale: keeps the pidgin-emergence
+  story clean (compression driven only by the budget/schema constraint, not a capability gap
+  between agents). Already the default in agents/base.py, no code change needed.
 - Orchestration/dictionary store: eventually deployed on Alibaba Cloud (ECS/Function Compute + 
   Tablestore or Redis) — NOT yet, build and test locally first
 - Frontend: simple dashboard, live dictionary + convergence graph (later)
 
 ## Current phase
-Building the negotiation loop locally first: agent prompts, turn controller (enforces token 
-budget + clarification-cost rule), dictionary store (start as local JSON file). 
-No cloud deployment yet.
+Local negotiation loop (agents, controller, dictionary store) is BUILT AND VALIDATED against the
+live API — see "Progress log" below. Currently deciding model config (same vs asymmetric) before
+building the baseline comparison arm. No cloud deployment yet.
 
 ## Biggest risk
 Make sure pidgin emergence is genuine (real hard constraints forcing compression), not scripted/
 theater. Constraints need teeth or the demo is fake.
+- RESOLVED (was a real bug, not just a theoretical concern): the original clarification-match
+  logic (`term.lower() in incoming.lower()`) auto-unsealed every coined term exactly one round
+  after coining, unconditionally — because the coining agent's own message necessarily contains
+  the term's text, so the substring check always matched immediately regardless of whether the
+  listener asked anything. The "costs a round to ask" rule had zero teeth. Fixed by adding an
+  explicit `asking_about` field to the JSON response schema (agents/base.py) and having
+  controller.py only reveal a sealed term when the CURRENT round's output explicitly lists it in
+  `asking_about` (and not for a term the same speaker just coined this same turn). Re-validated
+  live: round 2 now shows a genuine "what does 'PO' mean?" request before resolution, and
+  convergence took 6 rounds instead of the old (fake) 4.
+
+## Progress log
+1. DONE — Built agents/base.py (QwenAgent, Procurement/Compliance system prompts, JSON response
+   schema), dictionary/store.py (JSON-backed shared term store), controller.py (TurnController
+   with sealed-term enforcement), run_negotiation.py (CLI), one seeded task
+   (tasks/task_01_vendor_onboarding.json).
+2. DONE — Committed to git locally (root commit 8d3b5cb, "Initial negotiation loop..."). Repo has
+   NO remote configured — nothing has been pushed anywhere.
+3. DONE — Ran run_negotiation.py against the live Qwen API on task_01. Result: converged in 4
+   rounds, 1 clarification round, dictionary size 1. Confirmed the seal/reveal mechanic actually
+   fires (term "data residency addendum" coined, sealed, later resolved). Full transcript in
+   logs/task_01_run.jsonl (gitignored). Cost was negligible (small token budget, ~4 API calls).
+4. DONE — Decided model config: same model (qwen-plus) for both agents. No code change needed
+   (already the default).
+5. DONE — Found and fixed the clarification-match bug (see "Biggest risk" above). Re-validated
+   live against task_01: seal mechanic now genuinely binding. NOT YET COMMITTED to git.
+6. NEXT UP — commit the clarification-fix changes, then build the baseline (structured/JSON-
+   schema, no-pidgin) comparison arm, write more task JSONs, build a multi-task runner that
+   carries the dictionary forward across tasks and tracks convergence-speed learning curve, then
+   cloud deployment + dashboard + submission assets.
 
 ## Submission requirements (don't forget)
 - Public repo w/ OSS license visible in About section
