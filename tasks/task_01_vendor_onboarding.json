@@ -1,0 +1,4 @@
+{
+  "id": "task_01_vendor_onboarding",
+  "description": "Procurement-agent wants to onboard a new overseas vendor within 2 weeks for a $50k purchase order. Compliance-agent must approve, but the vendor is in a jurisdiction with a 90-day data residency requirement and has no prior audit trail. Negotiate a path both agents can agree to (e.g. conditional approval, staged rollout, added controls) within the round budget."
+}

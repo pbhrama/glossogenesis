@@ -1,0 +1,6 @@
+.venv/
+__pycache__/
+*.pyc
+dictionary/shared_dictionary.json
+logs/*.jsonl
+.env
