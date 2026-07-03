@@ -66,10 +66,18 @@ theater. Constraints need teeth or the demo is fake.
    (already the default).
 5. DONE — Found and fixed the clarification-match bug (see "Biggest risk" above). Re-validated
    live against task_01: seal mechanic now genuinely binding. NOT YET COMMITTED to git.
-6. NEXT UP — commit the clarification-fix changes, then build the baseline (structured/JSON-
-   schema, no-pidgin) comparison arm, write more task JSONs, build a multi-task runner that
-   carries the dictionary forward across tasks and tracks convergence-speed learning curve, then
-   cloud deployment + dashboard + submission assets.
+6. DONE — Committed clarification-fix (commit 73913aa).
+7. DONE — Built the baseline comparison arm: agents/base_baseline.py (BaselineAgent, full shared
+   structured schema known upfront -- po_cap_usd / data_residency_deadline_days /
+   audit_trail_deadline_days / conditions -- no coined vocab, no sealing), controller_baseline.py
+   (BaselineController, simple two-consecutive-agree convergence, no dictionary logic),
+   run_baseline.py (CLI, mirrors run_negotiation.py). Validated live against task_01: converged
+   in 4 rounds (vs. 6 for the pidgin arm on the same task, which paid 2 extra rounds to coin +
+   clarify "PO"). NOT YET COMMITTED to git.
+8. NEXT UP — commit the baseline arm, then write more task JSONs, build a multi-task runner that
+   runs BOTH arms per task, carries the pidgin dictionary forward across tasks (baseline has
+   nothing to carry forward by design), and tracks the convergence-speed learning curve as the
+   core result. Then cloud deployment + dashboard + submission assets.
 
 ## Submission requirements (don't forget)
 - Public repo w/ OSS license visible in About section
