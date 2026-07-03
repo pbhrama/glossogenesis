@@ -4,3 +4,6 @@ __pycache__/
 dictionary/shared_dictionary.json
 logs/*.jsonl
 .env
+.s/
+.serverless-devs/
+.fc/

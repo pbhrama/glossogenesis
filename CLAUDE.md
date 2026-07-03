@@ -104,9 +104,34 @@ theater. Constraints need teeth or the demo is fake.
    run against a scratch-cloned copy and are discarded). NOT YET RUN LIVE, NOT YET COMMITTED.
    DELIBERATELY DEFERRED — user decided to hold off on burning extra API calls for noise
    reduction until more of the project is built; will revisit closer to shipping.
-13. NEXT UP — user chose to move to "big stuff" next: cloud deployment, dashboard, and/or
-   submission assets (license, architecture diagram, demo video, description). Noise-reduction
-   reps (item 12) intentionally deferred until closer to shipping, not forgotten.
+13. DONE — Cloud deployment scaffolding built (user chose this over dashboard/submission-assets
+   first, and chose "I write code, you deploy it" -- assistant never touched real Alibaba Cloud
+   credentials or triggered real cloud spend):
+   - dictionary/store_redis.py: RedisDictionaryStore, same interface as the local
+     DictionaryStore, backed by ApsaraDB for Redis (standard `redis` package, no proprietary
+     Alibaba SDK needed since ApsaraDB for Redis is protocol-compatible). Smoke-tested against
+     fakeredis (in-memory emulator, dev-only dep in requirements-dev.txt) -- confirmed as a
+     genuine drop-in for TurnController with a real live negotiation run.
+   - fc_handler.py: Alibaba Cloud Function Compute entrypoint, runs one negotiation given
+     {"task_id", "budget", "max_rounds"}, returns JSON transcript. Reads DASHSCOPE_API_KEY /
+     REDIS_HOST / REDIS_PORT / REDIS_PASSWORD from FC environment variables (never hardcoded).
+     Smoke-tested end-to-end locally (real Qwen API calls + fakeredis standing in for
+     ApsaraDB) -- works, converged in 10 rounds on task_04 with a genuine clarification
+     exchange.
+   - s.yaml: Serverless Devs deploy config, region ap-southeast-1, HTTP-triggered FC function,
+     env vars pulled from shell env at deploy time (not hardcoded, file is committed to git).
+   - DEPLOY.md: step-by-step deploy guide for the USER to run themselves (create AccessKey,
+     install Serverless Devs CLI, create ApsaraDB for Redis instance, set env vars, `s deploy`,
+     test with curl, what to capture for the submission's proof-of-deployment requirement).
+   - requirements.txt now includes redis>=5.0.0 (real prod dep); requirements-dev.txt adds
+     fakeredis (local testing only, not deployed).
+   - NOT YET COMMITTED to git. NOT YET ACTUALLY DEPLOYED -- that step is on the user, per their
+     choice above. No real Alibaba Cloud resources have been created yet.
+14. NEXT UP — commit the cloud deployment scaffolding. Then: user needs to actually run
+   DEPLOY.md's steps themselves to get real proof-of-deployment for submission. Remaining after
+   that: dashboard (live dictionary + convergence graph), submission assets (public repo +
+   license, architecture diagram, demo video, description), and the deferred noise-reduction
+   reps (item 12) closer to shipping.
 
 ## Submission requirements (don't forget)
 - Public repo w/ OSS license visible in About section

@@ -1,0 +1,35 @@
+edition: 1.0.0
+name: glossogenesis
+access: default
+
+resources:
+  glossogenesis-negotiate:
+    component: fc
+    props:
+      region: ap-southeast-1
+      service:
+        name: glossogenesis
+        description: Multi-agent pidgin-protocol negotiation (Qwen Cloud Hackathon)
+        internetAccess: true
+      function:
+        name: negotiate
+        description: Runs one pidgin-protocol negotiation and returns the transcript
+        codeUri: .
+        handler: fc_handler.handler
+        runtime: python3.10
+        memorySize: 512
+        timeout: 120
+        environmentVariables:
+          # Set real values via `s config` / console before deploying -- DO NOT hardcode
+          # secrets here, this file is committed to git.
+          DASHSCOPE_API_KEY: ${env.DASHSCOPE_API_KEY}
+          REDIS_HOST: ${env.REDIS_HOST}
+          REDIS_PORT: ${env.REDIS_PORT}
+          REDIS_PASSWORD: ${env.REDIS_PASSWORD}
+      triggers:
+        - name: httpTrigger
+          type: http
+          config:
+            authType: anonymous
+            methods:
+              - POST
