@@ -93,8 +93,20 @@ theater. Constraints need teeth or the demo is fake.
    negotiation content is (e.g. task_05's cross-border legal scenario was just harder), not
    only vocabulary cost. For the submission, report clarification-rounds-saved as the clean
    metric, not raw round count, or run multiple reps per task and average to smooth noise.
-10. NEXT UP — commit run_all_tasks.py + new tasks + logs/summary.json. Then decide: more task
-   reps to reduce noise? Then cloud deployment + dashboard + submission assets remain.
+10. DONE — Committed run_all_tasks.py + new tasks + logs/summary.json (commit c6f54eb).
+11. DONE — Full self-audit after user asked "make sure nothing was messed up": confirmed no git
+   remote exists (nothing pushable), working tree clean, API key never committed anywhere
+   (grepped full history for the literal key value, zero matches), .gitignore actually excludes
+   dictionary/shared_dictionary.json + logs/*.jsonl + .venv/, all 8 source files compile clean,
+   git ls-files matches exactly what's expected. No issues found.
+12. DONE — Added --reps flag to run_all_tasks.py to average multiple runs per task per condition
+   (smooths round-count noise; only rep 0 advances the canonical pidgin dictionary, reps 1..N-1
+   run against a scratch-cloned copy and are discarded). NOT YET RUN LIVE, NOT YET COMMITTED.
+   DELIBERATELY DEFERRED — user decided to hold off on burning extra API calls for noise
+   reduction until more of the project is built; will revisit closer to shipping.
+13. NEXT UP — user chose to move to "big stuff" next: cloud deployment, dashboard, and/or
+   submission assets (license, architecture diagram, demo video, description). Noise-reduction
+   reps (item 12) intentionally deferred until closer to shipping, not forgotten.
 
 ## Submission requirements (don't forget)
 - Public repo w/ OSS license visible in About section
