@@ -135,10 +135,13 @@ theater. Constraints need teeth or the demo is fake.
    and move on to other work. Cloud deployment code (fc_handler.py, store_redis.py, s.yaml,
    DEPLOY.md) is done and tested locally -- only the actual `s deploy` run (which requires the
    user's own AccessKey) remains, whenever they want to pick it back up.
-16. NEXT UP — user chose to defer cloud deployment and work on other stuff instead. Candidates:
-   dashboard (live dictionary + convergence graph), submission assets (public repo + license,
-   architecture diagram, demo video, description), and the deferred noise-reduction reps
-   (item 12). Ask user which one when resuming.
+16. DONE — Repo is now PUBLIC on GitHub: https://github.com/pbhrama/glossogenesis (remote
+   "origin", account pbhrama). Added MIT LICENSE (commit 841a589). All 9 commits pushed to
+   main. This satisfies the "public repo w/ OSS license" submission requirement.
+17. NEXT UP — remaining submission assets: architecture diagram, ~3 min demo video, written
+   description + track selection. Also still open: dashboard (live dictionary + convergence
+   graph), actually running cloud deployment (paused, see item 15), and the deferred
+   noise-reduction reps (item 12). Ask user which one when resuming.
 
 ## Preferences
 - Do NOT add a "Co-Authored-By: Claude..." trailer to git commit messages in this repo (user
