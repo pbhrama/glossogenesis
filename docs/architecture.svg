@@ -1,162 +1,189 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1320 1000" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif">
   <style>
     :root {
       --ink: #1a1a1a;
-      --ink-soft: #55585c;
+      --ink-soft: #6b6f76;
       --surface: #ffffff;
-      --surface-alt: #f3f4f6;
-      --line: #c7cbd1;
-      --procurement: #d98a3d;
-      --compliance: #5aa3c9;
-      --pidgin: #c398e0;
+      --panel-pidgin: #f4eefb;
+      --panel-baseline: #f3f4f6;
+      --panel-deploy: #eefaf6;
+      --card: #ffffff;
+      --line: #dcdfe3;
+      --procurement: #c97a2e;
+      --compliance: #3d7ea6;
+      --pidgin: #8b4fd6;
+      --deploy: #1f9e78;
+      --shadow: rgba(20,20,20,0.07);
     }
     @media (prefers-color-scheme: dark) {
       :root {
-        --ink: #eceef1;
-        --ink-soft: #a6acb4;
-        --surface: #17181b;
-        --surface-alt: #212327;
-        --line: #3a3d42;
-        --procurement: #e8a565;
-        --compliance: #7cbbdc;
-        --pidgin: #d6aeeb;
+        --ink: #f0f1f3;
+        --ink-soft: #979da6;
+        --surface: #111216;
+        --panel-pidgin: #201a29;
+        --panel-baseline: #1b1c20;
+        --panel-deploy: #142420;
+        --card: #1c1d22;
+        --line: #34363c;
+        --procurement: #eba25a;
+        --compliance: #7ec2ea;
+        --pidgin: #b285ea;
+        --deploy: #4fcf9f;
+        --shadow: rgba(0,0,0,0.4);
       }
     }
     .bg { fill: var(--surface); }
-    .box { fill: var(--surface-alt); stroke: var(--line); stroke-width: 1.5; }
-    .box-pidgin { fill: var(--surface-alt); stroke: var(--pidgin); stroke-width: 1.5; }
-    .box-baseline { fill: var(--surface-alt); stroke: var(--line); stroke-width: 1.5; stroke-dasharray: 5 3; }
-    .box-api { fill: var(--surface-alt); stroke: var(--ink-soft); stroke-width: 1.5; }
-    .box-deploy { fill: var(--surface-alt); stroke: var(--ink-soft); stroke-width: 1; }
-    .lane-label { fill: var(--ink-soft); font-size: 13px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
-    .title { fill: var(--ink); font-size: 12px; font-weight: 600; }
-    .subtitle { fill: var(--ink-soft); font-size: 10.5px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
-    .node-title { fill: var(--ink); font-size: 12.5px; font-weight: 600; }
-    .node-sub { fill: var(--ink-soft); font-size: 10px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
-    .edge { stroke: var(--ink-soft); stroke-width: 1.4; fill: none; marker-end: url(#arrow); }
-    .edge-pidgin { stroke: var(--pidgin); stroke-width: 1.6; fill: none; marker-end: url(#arrow-pidgin); }
-    .heading { fill: var(--ink); font-size: 20px; font-weight: 700; }
-    .procurement-dot { fill: var(--procurement); }
-    .compliance-dot { fill: var(--compliance); }
-    .pidgin-dot { fill: var(--pidgin); }
-    .annotation { fill: var(--ink-soft); font-size: 10.5px; font-style: italic; }
+    .lane-pidgin { fill: var(--panel-pidgin); }
+    .lane-baseline { fill: var(--panel-baseline); }
+    .lane-deploy { fill: var(--panel-deploy); }
+    .card { fill: var(--card); stroke: var(--line); stroke-width: 1.25; }
+    .accent-bar-pidgin { fill: var(--pidgin); }
+    .accent-bar-deploy { fill: var(--deploy); }
+    .tag { font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em; }
+    .tag-pidgin { fill: var(--pidgin); }
+    .tag-baseline { fill: var(--ink-soft); }
+    .tag-deploy { fill: var(--deploy); }
+    .h1 { fill: var(--ink); font-size: 25px; font-weight: 700; }
+    .h1-sub { fill: var(--ink-soft); font-size: 13px; }
+    .title { fill: var(--ink); font-size: 13.5px; font-weight: 600; text-anchor: middle; }
+    .sub { fill: var(--ink-soft); font-size: 10.5px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; text-anchor: middle; }
+    .note { fill: var(--ink-soft); font-size: 11px; }
+    .edge-pidgin { stroke: var(--pidgin); stroke-width: 1.75; fill: none; marker-end: url(#arrow-pidgin); }
+    .edge-neutral { stroke: var(--ink-soft); stroke-width: 1.5; fill: none; marker-end: url(#arrow-neutral); }
+    .dep-title { fill: var(--ink); font-size: 13.5px; font-weight: 700; }
+    .dep-line { fill: var(--ink-soft); font-size: 11px; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
   </style>
 
   <defs>
-    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-      <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/>
-    </marker>
-    <marker id="arrow-pidgin" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <marker id="arrow-pidgin" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,0 L10,5 L0,10 z" fill="var(--pidgin)"/>
     </marker>
+    <marker id="arrow-neutral" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/>
+    </marker>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="1.5" stdDeviation="2.5" flood-color="var(--shadow)"/>
+    </filter>
   </defs>
 
-  <rect class="bg" x="0" y="0" width="1200" height="900"/>
-  <text class="heading" x="30" y="38">Glossogenesis — Architecture</text>
-  <text class="subtitle" x="30" y="58">Pidgin negotiation vs. structured-schema baseline, same task, same model</text>
+  <rect class="bg" x="0" y="0" width="1320" height="1000"/>
+
+  <text class="h1" x="40" y="46">Glossogenesis</text>
+  <text class="h1-sub" x="40" y="68">Two agents, one model, two very different rulebooks for how they're allowed to talk</text>
 
   <!-- Task input -->
-  <rect class="box" x="30" y="140" width="140" height="70" rx="6"/>
-  <text class="node-title" x="100" y="170" text-anchor="middle">Task input</text>
-  <text class="node-sub" x="100" y="188" text-anchor="middle">tasks/task_NN.json</text>
+  <rect class="card" x="40" y="170" width="180" height="66" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="130" y="198">Task input</text>
+  <text class="sub" x="130" y="217">tasks/task_NN.json</text>
 
   <!-- PIDGIN LANE -->
-  <text class="lane-label" x="220" y="100">Pidgin condition</text>
-  <rect class="box-pidgin" x="220" y="120" width="150" height="60" rx="6"/>
-  <circle class="procurement-dot" cx="234" cy="145" r="4"/>
-  <text class="node-title" x="246" y="150">Procurement-agent</text>
-  <text class="node-sub" x="234" y="168">agents/base.py</text>
+  <rect class="lane-pidgin" x="260" y="120" width="580" height="230" rx="12"/>
+  <text class="tag tag-pidgin" x="282" y="145">PIDGIN LANE</text>
 
-  <rect class="box-pidgin" x="410" y="120" width="150" height="60" rx="6"/>
-  <text class="node-title" x="485" y="145" text-anchor="middle">TurnController</text>
-  <text class="node-sub" x="485" y="163" text-anchor="middle">controller.py</text>
-  <text class="node-sub" x="485" y="176" text-anchor="middle">seal / reveal enforcement</text>
+  <rect class="accent-bar-pidgin" x="282" y="164" width="4" height="66" rx="2"/>
+  <rect class="card" x="286" y="164" width="180" height="66" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="376" y="192">Procurement agent</text>
+  <text class="sub" x="376" y="211">agents/base.py</text>
 
-  <rect class="box-pidgin" x="600" y="120" width="150" height="60" rx="6"/>
-  <circle class="compliance-dot" cx="614" cy="145" r="4"/>
-  <text class="node-title" x="626" y="150">Compliance-agent</text>
-  <text class="node-sub" x="614" y="168">agents/base.py</text>
+  <rect class="accent-bar-pidgin" x="486" y="164" width="4" height="66" rx="2"/>
+  <rect class="card" x="490" y="164" width="160" height="66" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="570" y="192">Turn controller</text>
+  <text class="sub" x="570" y="211">enforces sealing</text>
 
-  <rect class="box-pidgin" x="410" y="215" width="150" height="70" rx="6"/>
-  <circle class="pidgin-dot" cx="424" cy="240" r="4"/>
-  <text class="node-title" x="436" y="245">Dictionary Store</text>
-  <text class="node-sub" x="485" y="263" text-anchor="middle">local JSON ⇄ Redis toggle</text>
-  <text class="node-sub" x="485" y="276" text-anchor="middle">dictionary/store.py · store_redis.py</text>
+  <rect class="accent-bar-pidgin" x="670" y="164" width="4" height="66" rx="2"/>
+  <rect class="card" x="674" y="164" width="150" height="66" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="749" y="192">Compliance agent</text>
+  <text class="sub" x="749" y="211">agents/base.py</text>
+
+  <rect class="accent-bar-pidgin" x="486" y="264" width="4" height="60" rx="2"/>
+  <rect class="card" x="490" y="264" width="180" height="60" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="580" y="290">Shared dictionary</text>
+  <text class="sub" x="580" y="309">JSON file, or Redis</text>
 
   <!-- BASELINE LANE -->
-  <text class="lane-label" x="220" y="330">Baseline condition</text>
-  <rect class="box-baseline" x="220" y="350" width="150" height="60" rx="6"/>
-  <circle class="procurement-dot" cx="234" cy="375" r="4"/>
-  <text class="node-title" x="246" y="380">Procurement-agent</text>
-  <text class="node-sub" x="234" y="398">agents/base_baseline.py</text>
+  <rect class="lane-baseline" x="260" y="375" width="580" height="170" rx="12"/>
+  <text class="tag tag-baseline" x="282" y="400">BASELINE LANE</text>
 
-  <rect class="box-baseline" x="410" y="350" width="150" height="60" rx="6"/>
-  <text class="node-title" x="485" y="375" text-anchor="middle">BaselineController</text>
-  <text class="node-sub" x="485" y="393" text-anchor="middle">controller_baseline.py</text>
+  <rect class="card" x="286" y="418" width="180" height="66" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="376" y="446">Procurement agent</text>
+  <text class="sub" x="376" y="465">base_baseline.py</text>
 
-  <rect class="box-baseline" x="600" y="350" width="150" height="60" rx="6"/>
-  <circle class="compliance-dot" cx="614" cy="375" r="4"/>
-  <text class="node-title" x="626" y="380">Compliance-agent</text>
-  <text class="node-sub" x="614" y="398">agents/base_baseline.py</text>
+  <rect class="card" x="490" y="418" width="160" height="66" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="570" y="446">Plain controller</text>
+  <text class="sub" x="570" y="465">no dictionary</text>
 
-  <text class="annotation" x="410" y="435">full shared JSON schema known upfront — no coined vocab, no sealing</text>
+  <rect class="card" x="674" y="418" width="150" height="66" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="749" y="446">Compliance agent</text>
+  <text class="sub" x="749" y="465">base_baseline.py</text>
 
-  <!-- Shared API box -->
-  <rect class="box-api" x="850" y="220" width="170" height="90" rx="6"/>
-  <text class="node-title" x="935" y="252" text-anchor="middle">Qwen Cloud API</text>
-  <text class="node-sub" x="935" y="270" text-anchor="middle">qwen-plus (both agents)</text>
-  <text class="node-sub" x="935" y="284" text-anchor="middle">OpenAI-compatible SDK</text>
-  <text class="node-sub" x="935" y="297" text-anchor="middle">dashscope-intl</text>
+  <text class="note" x="282" y="522">Schema is fixed in advance — no coined terms, nothing to clarify.</text>
 
-  <!-- Convergence -->
-  <rect class="box" x="850" y="360" width="170" height="60" rx="6"/>
-  <text class="node-title" x="935" y="385" text-anchor="middle">run_all_tasks.py</text>
-  <text class="node-sub" x="935" y="403" text-anchor="middle">runs both arms per task</text>
+  <!-- Shared API -->
+  <rect class="card" x="920" y="164" width="220" height="94" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="1030" y="195">Qwen Cloud</text>
+  <text class="sub" x="1030" y="214">same model, both agents</text>
+  <text class="sub" x="1030" y="231">dashscope-intl endpoint</text>
 
-  <rect class="box" x="850" y="450" width="170" height="60" rx="6"/>
-  <text class="node-title" x="935" y="475" text-anchor="middle">logs/summary.json</text>
-  <text class="node-sub" x="935" y="493" text-anchor="middle">rounds, clarifications, dict size</text>
+  <!-- Convergence chain -->
+  <rect class="card" x="920" y="400" width="220" height="64" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="1030" y="428">run_all_tasks.py</text>
+  <text class="sub" x="1030" y="447">every task, both arms</text>
 
-  <rect class="box-pidgin" x="850" y="540" width="170" height="80" rx="6"/>
-  <text class="node-title" x="935" y="565" text-anchor="middle">Result: learning curve</text>
-  <text class="node-sub" x="935" y="584" text-anchor="middle">clarification cost → 0</text>
-  <text class="node-sub" x="935" y="598" text-anchor="middle">after task_01 dictionary matures</text>
+  <rect class="card" x="920" y="494" width="220" height="56" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="1030" y="518">logs/summary.json</text>
+  <text class="sub" x="1030" y="537">where the numbers land</text>
+
+  <rect class="accent-bar-pidgin" x="920" y="580" width="220" height="4" rx="2"/>
+  <rect class="card" x="920" y="584" width="220" height="50" rx="8" filter="url(#shadow)"/>
+  <text class="title" x="1030" y="614">Result: learning curve</text>
 
   <!-- Edges -->
-  <path class="edge" d="M170,175 C195,175 195,150 220,150"/>
-  <path class="edge" d="M170,175 C195,175 195,380 220,380"/>
+  <path class="edge-pidgin" d="M220,197 L260,197"/>
+  <path class="edge-neutral" d="M220,197 L235,197 Q245,197 245,207 L245,441 Q245,451 255,451 L260,451"/>
 
-  <path class="edge-pidgin" d="M370,150 L410,150"/>
-  <path class="edge-pidgin" d="M560,150 L600,150"/>
-  <path class="edge-pidgin" d="M485,180 L485,215"/>
+  <path class="edge-pidgin" d="M466,197 L486,197"/>
+  <path class="edge-pidgin" d="M650,197 L670,197"/>
+  <path class="edge-pidgin" d="M570,230 L570,264"/>
 
-  <path class="edge" d="M370,380 L410,380"/>
-  <path class="edge" d="M560,380 L600,380"/>
+  <path class="edge-neutral" d="M466,451 L490,451"/>
+  <path class="edge-neutral" d="M650,451 L674,451"/>
 
-  <path class="edge-pidgin" d="M750,150 C820,150 820,240 850,255"/>
-  <path class="edge" d="M750,380 C820,380 820,270 850,275"/>
+  <path class="edge-pidgin" d="M824,197 C870,197 870,205 920,205"/>
+  <path class="edge-neutral" d="M824,451 L845,451 Q855,451 855,441 L855,235 Q855,225 865,225 L920,225"/>
 
-  <path class="edge" d="M935,310 L935,360"/>
-  <path class="edge" d="M935,420 L935,450"/>
-  <path class="edge" d="M935,510 L935,540"/>
+  <path class="edge-neutral" d="M1030,258 L1030,400"/>
+  <path class="edge-neutral" d="M1030,464 L1030,494"/>
+  <path class="edge-neutral" d="M1030,550 L1030,584"/>
 
-  <!-- Deployment band -->
-  <line x1="0" y1="680" x2="1200" y2="680" stroke="var(--line)" stroke-width="1"/>
-  <text class="lane-label" x="30" y="710">Deployment</text>
+  <!-- Deployment -->
+  <line x1="0" y1="720" x2="1320" y2="720" stroke="var(--line)" stroke-width="1"/>
+  <text class="tag" x="40" y="752" style="fill: var(--ink-soft)">WHERE IT RUNS</text>
 
-  <rect class="box-deploy" x="30" y="730" width="260" height="90" rx="6"/>
-  <text class="node-title" x="160" y="758" text-anchor="middle">Local (dev)</text>
-  <text class="node-sub" x="160" y="776" text-anchor="middle">run_negotiation.py / run_baseline.py</text>
-  <text class="node-sub" x="160" y="790" text-anchor="middle">dictionary/store.py (JSON file)</text>
-  <text class="node-sub" x="160" y="804" text-anchor="middle">DASHSCOPE_API_KEY from shell env</text>
+  <!-- Local card: terminal style -->
+  <rect class="card" x="40" y="772" width="300" height="130" rx="10" filter="url(#shadow)"/>
+  <rect x="40" y="772" width="300" height="30" rx="10" fill="var(--line)" opacity="0.35"/>
+  <circle cx="58" cy="787" r="4.5" fill="#e5644f"/>
+  <circle cx="72" cy="787" r="4.5" fill="#e0b23d"/>
+  <circle cx="86" cy="787" r="4.5" fill="#57b06a"/>
+  <text class="dep-title" x="190" y="792" text-anchor="middle">Your laptop</text>
+  <text class="dep-line" x="60" y="826">run_negotiation.py</text>
+  <text class="dep-line" x="60" y="844">run_baseline.py</text>
+  <text class="dep-line" x="60" y="862">dictionary lives in a local .json</text>
+  <text class="dep-line" x="60" y="880">API key stays in your shell env</text>
 
-  <rect class="box-deploy" x="330" y="730" width="320" height="90" rx="6"/>
-  <text class="node-title" x="490" y="758" text-anchor="middle">Alibaba Cloud</text>
-  <text class="node-sub" x="490" y="776" text-anchor="middle">Function Compute — fc_handler.py</text>
-  <text class="node-sub" x="490" y="790" text-anchor="middle">ApsaraDB for Redis — store_redis.py</text>
-  <text class="node-sub" x="490" y="804" text-anchor="middle">s.yaml (Serverless Devs, ap-southeast-1)</text>
+  <!-- Alibaba card: cloud style -->
+  <rect class="lane-deploy" x="370" y="772" width="360" height="130" rx="10"/>
+  <rect class="accent-bar-deploy" x="370" y="772" width="6" height="130" rx="3"/>
+  <g transform="translate(384,778) scale(1.6)" fill="var(--deploy)">
+    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>
+  </g>
+  <text class="tag tag-deploy" x="436" y="801">ALIBABA CLOUD</text>
+  <text class="dep-line" x="396" y="832">fc_handler.py on Function Compute</text>
+  <text class="dep-line" x="396" y="850">ApsaraDB for Redis stands in for the json file</text>
+  <text class="dep-line" x="396" y="868">shipped with s.yaml, region ap-southeast-1</text>
+  <text class="dep-line" x="396" y="886">same agent code, different plumbing</text>
 
-  <path class="edge" d="M290,775 L330,775"/>
+  <path class="edge-neutral" d="M340,837 L370,837"/>
 
-  <text class="annotation" x="30" y="850">Same agent/controller code targets either backing store — DictionaryStore and RedisDictionaryStore share one interface.</text>
+  <text class="note" x="40" y="940">DictionaryStore and its Redis-backed twin share one interface, so swapping the store never touches the agents.</text>
 </svg>

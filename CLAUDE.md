@@ -168,13 +168,19 @@ theater. Constraints need teeth or the demo is fake.
    CLAUDE.md update instead -- not a signal the design itself was rejected, just an interruption).
    NOT YET saved into the repo (e.g. as docs/architecture.svg), NOT YET committed, NOT YET
    rendered/previewed at all.
-19. NEXT UP — resume the architecture diagram: either re-attempt the Artifact preview, or skip
-   straight to extracting the SVG into docs/architecture.svg in the repo and embedding it in a
-   README (repo currently has NO README.md -- worth creating one, referencing CLAUDE.md's
-   project description). After that: remaining submission assets (~3 min demo video, written
-   description + track selection), dashboard (live dictionary + convergence graph), actually
-   running cloud deployment (paused, see item 15), and the deferred noise-reduction reps
-   (item 12).
+19. DONE — Rebuilt the architecture diagram from scratch (prior scratchpad draft didn't survive
+   the session) as docs/architecture.svg: dark/light theme via CSS media query, same
+   --ink/--surface/--procurement/--compliance/--pidgin tokens as originally planned, two-lane
+   layout (pidgin condition on top, baseline below) both hitting the shared Qwen Cloud API box,
+   converging into run_all_tasks.py -> logs/summary.json -> learning-curve result callout, plus a
+   bottom Deployment band (local dev vs Alibaba Cloud). Previewed via Artifact tool and approved
+   by user. Wrote README.md (repo had none) describing the project, embedding the diagram,
+   documenting repo layout and deployment paths. Committed both (commit 92c9925, no co-author
+   trailer per preference below). NOT pushed to origin yet -- user said "commit only" this round.
+20. NEXT UP — push README + diagram commit to origin when ready (currently only local). After
+   that: remaining submission assets (~3 min demo video, written description + track selection),
+   dashboard (live dictionary + convergence graph), actually running cloud deployment (paused, see
+   item 15), and the deferred noise-reduction reps (item 12).
 
 ## Preferences
 - Do NOT add a "Co-Authored-By: Claude..." trailer to git commit messages in this repo (user
