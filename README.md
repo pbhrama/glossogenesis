@@ -32,6 +32,10 @@ the 3-term dictionary built while negotiating the first task gets reused for fre
 after. Raw round count doesn't cleanly decrease (task content difficulty varies independently of
 vocabulary cost), so the clean metric is clarification-rounds-saved, not raw round count.
 
+Run `python generate_dashboard.py` to regenerate [`docs/dashboard.html`](docs/dashboard.html) — a
+self-contained dashboard (convergence charts, the learning curve, and the live shared dictionary)
+built from `logs/summary.json` and `dictionary/shared_dictionary.json`.
+
 ## Deployment
 
 - **Local (dev)**: `run_negotiation.py` / `run_baseline.py`, dictionary backed by a local JSON

@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="color-scheme" content="light dark"/>
+<title>Glossogenesis — pidgin vs. baseline negotiation results</title>
+<style>
+  html {
+    color-scheme: light dark;
+    background: #f9f9f7;
+  }
+  @media (prefers-color-scheme: dark) {
+    html { background: #0d0d0d; }
+  }
+  .viz-root {
+    --surface-1:      #fcfcfb;
+    --page:           #f9f9f7;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline-axis:  #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --row-alt:        rgba(11,11,11,0.025);
+    --series-pidgin:   #2a78d6;
+    --series-baseline: #1baf7a;
+    --card-shadow: 0 1px 2px rgba(11,11,11,0.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    .viz-root {
+      --surface-1:      #1a1a19;
+      --page:           #0d0d0d;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #979691;
+      --gridline:       #2c2c2a;
+      --baseline-axis:  #383835;
+      --border: rgba(255,255,255,0.10);
+      --row-alt: rgba(255,255,255,0.03);
+      --series-pidgin:   #3987e5;
+      --series-baseline: #199e70;
+      --card-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--page);
+    color: var(--text-primary);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 40px 24px 80px; }
+  h1 { font-size: 25px; font-weight: 700; margin: 0 0 8px; color: var(--text-primary); }
+  .subhead { color: var(--text-secondary); font-size: 14px; margin: 0 0 32px; max-width: 640px; line-height: 1.5; }
+  .card {
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+  .card h2 { font-size: 15px; font-weight: 700; margin: 0 0 4px; color: var(--text-primary); }
+  .card .desc { color: var(--text-secondary); font-size: 12.5px; margin: 0 0 18px; line-height: 1.5; }
+
+  /* stat tile */
+  .stat-label { color: var(--text-secondary); font-size: 13px; margin: 0 0 8px; }
+  .stat-value { font-size: 46px; font-weight: 700; line-height: 1; color: var(--text-primary); }
+  .stat-value .arrow { color: var(--text-muted); font-weight: 500; padding: 0 6px; }
+  .stat-note { color: var(--text-muted); font-size: 12.5px; margin: 12px 0 0; max-width: 560px; line-height: 1.5; }
+
+  /* legend */
+  .legend { display: flex; gap: 18px; margin-bottom: 16px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-secondary); }
+  .legend-swatch { width: 12px; height: 8px; border-radius: 2px; flex: none; }
+
+  svg text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+  .axis-label { fill: var(--text-muted); font-size: 10.5px; }
+  .grid-line { stroke: var(--gridline); stroke-width: 1; }
+  .baseline-line { stroke: var(--baseline-axis); stroke-width: 1; }
+  .crosshair-line { stroke: var(--baseline-axis); stroke-width: 1; }
+  .ring-stroke { stroke: var(--surface-1); }
+  .value-label { fill: var(--text-secondary); font-size: 11px; font-weight: 700; text-anchor: middle; }
+  .cat-label { fill: var(--text-muted); font-size: 11px; text-anchor: middle; }
+  .bar-mark { transition: opacity 0.1s ease; }
+  .bar-mark.dim { opacity: 0.45; }
+
+  .tooltip {
+    position: absolute;
+    pointer-events: none;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-size: 12px;
+    box-shadow: var(--card-shadow);
+    opacity: 0;
+    transition: opacity 0.08s ease;
+    z-index: 10;
+    white-space: nowrap;
+  }
+  .tooltip.visible { opacity: 1; }
+  .tooltip .t-row { display: flex; align-items: center; gap: 6px; }
+  .tooltip .t-key { width: 10px; height: 2px; border-radius: 1px; flex: none; }
+  .tooltip .t-val { font-weight: 700; color: var(--text-primary); }
+  .tooltip .t-name { color: var(--text-secondary); }
+  .tooltip .t-cat { color: var(--text-muted); font-size: 11px; margin-bottom: 4px; }
+
+  .chart-wrap { position: relative; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+  col.col-term { width: 22%; }
+  col.col-def { width: 46%; }
+  col.col-coiner { width: 20%; }
+  col.col-round { width: 12%; }
+  th {
+    text-align: left; color: var(--text-muted); font-weight: 600; font-size: 10.5px;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    padding: 0 14px 10px; border-bottom: 1px solid var(--gridline);
+  }
+  th.num, td.round { text-align: right; }
+  td {
+    padding: 12px 14px; border-bottom: 1px solid var(--gridline);
+    vertical-align: top; color: var(--text-primary);
+  }
+  tr:last-child td { border-bottom: none; }
+  tbody tr:nth-child(odd) { background: var(--row-alt); }
+  td.term { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-weight: 600; }
+  td.definition { color: var(--text-secondary); line-height: 1.5; }
+  td.coiner { color: var(--text-secondary); white-space: nowrap; }
+  td.round { color: var(--text-muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+</style>
+</head>
+<body>
+<div class="viz-root wrap" id="root">
+  <h1>Pidgin vs. baseline negotiation: results</h1>
+  <p class="subhead">Two Qwen-powered agents negotiate the same tasks two ways — coining and sealing their own shared vocabulary (pidgin) vs. working from a full schema known upfront (baseline). This page tracks how fast each approach converges, and whether the pidgin's vocabulary cost actually disappears over time.</p>
+
+  <div class="card" id="stat-card"></div>
+
+  <div class="card">
+    <h2>Rounds to converge, per task</h2>
+    <p class="desc">Total negotiation rounds, pidgin vs. baseline. Round count also reflects how contentious each task's content is — it isn't purely a vocabulary-cost measure.</p>
+    <div class="chart-wrap" id="bar-chart"></div>
+  </div>
+
+  <div class="card">
+    <h2>The learning curve: clarification rounds per task</h2>
+    <p class="desc">Rounds the pidgin arm spent asking "what does that mean?" before a coined term could be used freely. This is the number that should fall as the shared dictionary matures.</p>
+    <div class="chart-wrap" id="line-chart"></div>
+  </div>
+
+  <div class="card">
+    <h2>Shared dictionary</h2>
+    <p class="desc">Terms coined mid-negotiation and sealed until explicitly clarified, then reused for free in every task after.</p>
+    <div id="dict-table"></div>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  "tasks": [
+    {
+      "task_id": "task_01_vendor_onboarding",
+      "dictionary_size_before": 0,
+      "pidgin_rounds": 11,
+      "pidgin_converged": true,
+      "pidgin_clarification_rounds": 3,
+      "baseline_rounds": 5,
+      "baseline_converged": true
+    },
+    {
+      "task_id": "task_02_expedited_shipment",
+      "dictionary_size_before": 3,
+      "pidgin_rounds": 5,
+      "pidgin_converged": true,
+      "pidgin_clarification_rounds": 0,
+      "baseline_rounds": 4,
+      "baseline_converged": true
+    },
+    {
+      "task_id": "task_03_subcontractor_addition",
+      "dictionary_size_before": 3,
+      "pidgin_rounds": 7,
+      "pidgin_converged": true,
+      "pidgin_clarification_rounds": 0,
+      "baseline_rounds": 4,
+      "baseline_converged": true
+    },
+    {
+      "task_id": "task_04_payment_terms_change",
+      "dictionary_size_before": 3,
+      "pidgin_rounds": 4,
+      "pidgin_converged": true,
+      "pidgin_clarification_rounds": 0,
+      "baseline_rounds": 4,
+      "baseline_converged": true
+    },
+    {
+      "task_id": "task_05_data_export_request",
+      "dictionary_size_before": 3,
+      "pidgin_rounds": 11,
+      "pidgin_converged": true,
+      "pidgin_clarification_rounds": 0,
+      "baseline_rounds": 4,
+      "baseline_converged": true
+    }
+  ],
+  "dictionary": [
+    {
+      "term": "PO",
+      "definition": "purchase order",
+      "coined_by": "Procurement-agent",
+      "round_introduced": 2
+    },
+    {
+      "term": "risk tier",
+      "definition": "A classification of vendor risk level based on data sensitivity and jurisdiction.",
+      "coined_by": "Compliance-agent",
+      "round_introduced": 3
+    },
+    {
+      "term": "retention window",
+      "definition": "The minimum time audit-relevant logs and evidence must be preserved.",
+      "coined_by": "Compliance-agent",
+      "round_introduced": 4
+    }
+  ],
+  "headline": {
+    "first": 3,
+    "last": 0,
+    "saved": 3
+  }
+};
+
+const cs = getComputedStyle(document.querySelector('.viz-root'));
+const COLOR_PIDGIN = cs.getPropertyValue('--series-pidgin').trim();
+const COLOR_BASELINE = cs.getPropertyValue('--series-baseline').trim();
+
+function shortLabel(taskId) {
+  const m = taskId.match(/task_(\d+)/);
+  return m ? m[1] : taskId;
+}
+
+function makeTooltip(container) {
+  const el = document.createElement('div');
+  el.className = 'tooltip';
+  container.appendChild(el);
+  return el;
+}
+
+function showTooltip(tooltip, container, x, y, html) {
+  tooltip.innerHTML = html;
+  const rect = container.getBoundingClientRect();
+  tooltip.style.left = Math.min(x + 12, rect.width - tooltip.offsetWidth - 4) + 'px';
+  tooltip.style.top = Math.max(y - tooltip.offsetHeight - 12, 4) + 'px';
+  tooltip.classList.add('visible');
+}
+
+function hideTooltip(tooltip) {
+  tooltip.classList.remove('visible');
+}
+
+// ---------- Stat tile ----------
+(function renderStat() {
+  const el = document.getElementById('stat-card');
+  const h = DATA.headline;
+  el.innerHTML = `
+    <p class="stat-label">Clarification rounds — task_01 vs. every task after</p>
+    <div class="stat-value">${h.first}<span class="arrow">→</span>${h.last}</div>
+    <p class="stat-note">The shared dictionary is built once, during task_01. Every task after reuses it for free, so clarification cost stays at zero once it's seeded — that drop is the core result.</p>
+  `;
+})();
+
+// ---------- Grouped bar chart: rounds to converge ----------
+(function renderBarChart() {
+  const container = document.getElementById('bar-chart');
+  const tasks = DATA.tasks;
+  const W = 1000, H = 300;
+  const padL = 34, padR = 20, padT = 20, padB = 40;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const maxVal = Math.max(...tasks.map(t => Math.max(t.pidgin_rounds, t.baseline_rounds)));
+  const yMax = Math.ceil(maxVal / 2) * 2;
+  const groupW = plotW / tasks.length;
+  const barW = Math.min(26, groupW * 0.3);
+  const gap = 4;
+
+  const yTicks = [0, yMax / 2, yMax];
+  let gridSvg = yTicks.map(v => {
+    const y = padT + plotH - (v / yMax) * plotH;
+    return `<line class="grid-line" x1="${padL}" x2="${W - padR}" y1="${y}" y2="${y}"/>
+            <text class="axis-label" x="${padL - 8}" y="${y + 3}" text-anchor="end">${v}</text>`;
+  }).join('');
+
+  let barsSvg = '';
+  let hitAreasSvg = '';
+  let barId = 0;
+  const barIds = [];
+
+  tasks.forEach((t, i) => {
+    const cx = padL + groupW * i + groupW / 2;
+    const label = shortLabel(t.task_id);
+
+    [
+      { key: 'pidgin', val: t.pidgin_rounds, color: COLOR_PIDGIN, dx: -gap / 2 - barW },
+      { key: 'baseline', val: t.baseline_rounds, color: COLOR_BASELINE, dx: gap / 2 },
+    ].forEach(s => {
+      const id = `bar-${barId++}`;
+      const barH = Math.max(2, (s.val / yMax) * plotH);
+      const x = cx + s.dx;
+      const y = padT + plotH - barH;
+      const r = Math.min(4, barH);
+      barsSvg += `<path id="${id}" class="bar-mark" d="M${x},${y + r}
+        a${r},${r} 0 0 1 ${r},-${r}
+        h${barW - 2 * r}
+        a${r},${r} 0 0 1 ${r},${r}
+        v${barH - r}
+        h-${barW}
+        z" fill="${s.color}"/>`;
+      hitAreasSvg += `<rect class="hit" data-bar="${id}" data-task="${label}" data-series="${s.key}" data-val="${s.val}"
+        x="${x}" y="${padT}" width="${barW}" height="${plotH}" fill="transparent"/>`;
+      barIds.push(id);
+    });
+
+    barsSvg += `<text class="cat-label" x="${cx}" y="${padT + plotH + 20}">task_${label}</text>`;
+  });
+
+  container.innerHTML = `
+    <div class="legend">
+      <div class="legend-item"><span class="legend-swatch" style="background:${COLOR_PIDGIN}"></span>Pidgin</div>
+      <div class="legend-item"><span class="legend-swatch" style="background:${COLOR_BASELINE}"></span>Baseline</div>
+    </div>
+    <svg viewBox="0 0 ${W} ${H}" width="100%">
+      ${gridSvg}
+      <line class="baseline-line" x1="${padL}" x2="${W - padR}" y1="${padT + plotH}" y2="${padT + plotH}"/>
+      ${barsSvg}
+      ${hitAreasSvg}
+    </svg>
+  `;
+
+  const tooltip = makeTooltip(container);
+  container.querySelectorAll('.hit').forEach(hit => {
+    const name = hit.dataset.series === 'pidgin' ? 'Pidgin' : 'Baseline';
+    const color = hit.dataset.series === 'pidgin' ? COLOR_PIDGIN : COLOR_BASELINE;
+    const bar = container.querySelector(`#${hit.dataset.bar}`);
+    const show = (e) => {
+      barIds.forEach(id => container.querySelector(`#${id}`).classList.add('dim'));
+      bar.classList.remove('dim');
+      const rect = container.getBoundingClientRect();
+      const x = (e.clientX ?? rect.left) - rect.left;
+      const y = (e.clientY ?? rect.top) - rect.top;
+      showTooltip(tooltip, container, x, y, `
+        <div class="t-cat">task_${hit.dataset.task}</div>
+        <div class="t-row"><span class="t-key" style="background:${color}"></span>
+          <span class="t-name">${name}</span> <span class="t-val">${hit.dataset.val} rounds</span></div>
+      `);
+    };
+    hit.setAttribute('tabindex', '0');
+    hit.addEventListener('pointermove', show);
+    hit.addEventListener('focus', show);
+    hit.addEventListener('pointerleave', () => {
+      barIds.forEach(id => container.querySelector(`#${id}`).classList.remove('dim'));
+      hideTooltip(tooltip);
+    });
+    hit.addEventListener('blur', () => {
+      barIds.forEach(id => container.querySelector(`#${id}`).classList.remove('dim'));
+      hideTooltip(tooltip);
+    });
+  });
+})();
+
+// ---------- Line chart: clarification rounds (the learning curve) ----------
+(function renderLineChart() {
+  const container = document.getElementById('line-chart');
+  const tasks = DATA.tasks;
+  const W = 1000, H = 240;
+  const padL = 34, padR = 30, padT = 28, padB = 40;
+  const plotW = W - padL - padR, plotH = H - padT - padB;
+  const maxVal = Math.max(1, ...tasks.map(t => t.pidgin_clarification_rounds));
+  const yMax = Math.ceil(maxVal);
+  const n = tasks.length;
+  const xStep = n > 1 ? plotW / (n - 1) : 0;
+
+  const points = tasks.map((t, i) => ({
+    x: padL + xStep * i,
+    y: padT + plotH - (t.pidgin_clarification_rounds / yMax) * plotH,
+    val: t.pidgin_clarification_rounds,
+    label: shortLabel(t.task_id),
+  }));
+
+  const yTicks = [...new Set([0, Math.ceil(yMax / 2), yMax])];
+  let gridSvg = yTicks.map(v => {
+    const y = padT + plotH - (v / yMax) * plotH;
+    return `<line class="grid-line" x1="${padL}" x2="${W - padR}" y1="${y}" y2="${y}"/>
+            <text class="axis-label" x="${padL - 8}" y="${y + 3}" text-anchor="end">${v}</text>`;
+  }).join('');
+
+  const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x},${p.y}`).join(' ');
+  const areaD = `${pathD} L${points[points.length - 1].x},${padT + plotH} L${points[0].x},${padT + plotH} Z`;
+  const first = points[0];
+  const last = points[points.length - 1];
+
+  let catLabels = points.map(p => `<text class="cat-label" x="${p.x}" y="${padT + plotH + 20}">task_${p.label}</text>`).join('');
+  let dots = points.map(p => `<circle cx="${p.x}" cy="${p.y}" r="4" fill="${COLOR_PIDGIN}" stroke-width="2" class="ring-stroke"/>`).join('');
+
+  container.innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" width="100%">
+      ${gridSvg}
+      <line class="baseline-line" x1="${padL}" x2="${W - padR}" y1="${padT + plotH}" y2="${padT + plotH}"/>
+      <path d="${areaD}" fill="${COLOR_PIDGIN}" opacity="0.1"/>
+      <path d="${pathD}" fill="none" stroke="${COLOR_PIDGIN}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      ${dots}
+      <text class="value-label" x="${first.x}" y="${first.y - 14}">${first.val}</text>
+      ${first.val !== last.val ? `<text class="value-label" x="${last.x}" y="${last.y - 14}">${last.val}</text>` : ''}
+      ${catLabels}
+      <line class="crosshair-line" x1="0" x2="0" y1="${padT}" y2="${padT + plotH}" opacity="0"/>
+    </svg>
+  `;
+
+  const svg = container.querySelector('svg');
+  const crosshair = container.querySelector('.crosshair-line');
+  const tooltip = makeTooltip(container);
+
+  function nearestPoint(mouseXInViewBox) {
+    let best = points[0], bestD = Infinity;
+    for (const p of points) {
+      const d = Math.abs(p.x - mouseXInViewBox);
+      if (d < bestD) { best = p; bestD = d; }
+    }
+    return best;
+  }
+
+  svg.addEventListener('pointermove', (e) => {
+    const rect = svg.getBoundingClientRect();
+    const scale = W / rect.width;
+    const vx = (e.clientX - rect.left) * scale;
+    const p = nearestPoint(vx);
+    crosshair.setAttribute('x1', p.x);
+    crosshair.setAttribute('x2', p.x);
+    crosshair.setAttribute('opacity', '1');
+    const screenX = (p.x / W) * rect.width;
+    const screenY = (p.y / H) * rect.height;
+    showTooltip(tooltip, container, screenX, screenY, `
+      <div class="t-cat">task_${p.label}</div>
+      <div class="t-row"><span class="t-key" style="background:${COLOR_PIDGIN}"></span>
+        <span class="t-name">Clarification rounds</span> <span class="t-val">${p.val}</span></div>
+    `);
+  });
+  svg.addEventListener('pointerleave', () => {
+    crosshair.setAttribute('opacity', '0');
+    hideTooltip(tooltip);
+  });
+})();
+
+// ---------- Dictionary table ----------
+(function renderTable() {
+  const el = document.getElementById('dict-table');
+  const rows = DATA.dictionary.map(d => `
+    <tr>
+      <td class="term">${d.term}</td>
+      <td class="definition">${d.definition}</td>
+      <td class="coiner">${d.coined_by}</td>
+      <td class="round">round ${d.round_introduced}</td>
+    </tr>
+  `).join('');
+  el.innerHTML = `
+    <table>
+      <colgroup>
+        <col class="col-term"><col class="col-def"><col class="col-coiner"><col class="col-round">
+      </colgroup>
+      <thead><tr><th>Term</th><th>Definition</th><th>Coined by</th><th class="num">Introduced</th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="4">No terms coined yet.</td></tr>'}</tbody>
+    </table>
+  `;
+})();
+</script>
+</body>
+</html>
