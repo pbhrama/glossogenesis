@@ -136,12 +136,45 @@ theater. Constraints need teeth or the demo is fake.
    DEPLOY.md) is done and tested locally -- only the actual `s deploy` run (which requires the
    user's own AccessKey) remains, whenever they want to pick it back up.
 16. DONE — Repo is now PUBLIC on GitHub: https://github.com/pbhrama/glossogenesis (remote
-   "origin", account pbhrama). Added MIT LICENSE (commit 841a589). All 9 commits pushed to
-   main. This satisfies the "public repo w/ OSS license" submission requirement.
-17. NEXT UP — remaining submission assets: architecture diagram, ~3 min demo video, written
-   description + track selection. Also still open: dashboard (live dictionary + convergence
-   graph), actually running cloud deployment (paused, see item 15), and the deferred
-   noise-reduction reps (item 12). Ask user which one when resuming.
+   "origin", account pbhrama). Added MIT LICENSE. This satisfies the "public repo w/ OSS
+   license" submission requirement.
+17. DONE — Found and fixed a real issue: after pushing, GitHub's Contributors sidebar showed
+   "claude Claude" as a contributor. Root cause: the first 5 commits (made before the user asked
+   to drop attribution) had "Co-Authored-By: Claude Sonnet 5 <noreply@anthropic.com>" trailers,
+   and GitHub parses those into the Contributors graph -- it stayed cached even after we rewrote
+   history (via `git filter-branch --msg-filter`, stripping the trailer from all 9 commits) and
+   force-pushed. Fix: deleted the GitHub repo entirely (`gh repo delete`, required requesting
+   the `delete_repo` OAuth scope via `gh auth refresh -h github.com -s delete_repo`, which the
+   USER ran themselves via `!` since it's an interactive browser auth step) and recreated it
+   fresh (`gh repo create`), pushing only the already-clean 9-commit history. Verified via
+   `gh api repos/pbhrama/glossogenesis/contributors` that only "pbhrama" shows up now, 9
+   contributions, nothing else. NOTE: commit hashes changed during this process (filter-branch
+   rewrite) -- do not reference old hashes like 841a589/19ef386/etc, they no longer exist. Get
+   current hashes via `git log --oneline` if needed.
+18. IN PROGRESS — Architecture diagram for the submission. Design: hand-authored SVG, dark/light
+   theme tokens (--ink/--surface/--procurement #d98a3d/--compliance #5aa3c9/--pidgin #c398e0),
+   system mono/sans font stacks (no custom font loading, needs to export cleanly as a static SVG
+   for GitHub README embedding too). Layout: task input on the left branches into two parallel
+   lanes (pidgin condition on top: Procurement-agent/TurnController/Compliance-agent + shared
+   Dictionary Store with local-JSON-vs-Redis toggle; baseline condition below: same personas +
+   BaselineController, no dictionary), both calling a shared Qwen Cloud API box, converging into
+   run_all_tasks.py -> logs/summary.json -> a result annotation about the learning-curve finding,
+   plus a bottom "Deployment" band showing local (dev) vs Alibaba Cloud (fc_handler.py + ApsaraDB
+   Redis, via s.yaml) paths.
+   STATUS: draft HTML file written to scratchpad
+   (architecture.html, NOT in the repo -- scratchpad path is session-specific and won't persist,
+   will need to be rewritten or relocated in a fresh session) but the Artifact tool call to
+   preview/publish it was REJECTED by the user before it ran (interrupted to ask for this
+   CLAUDE.md update instead -- not a signal the design itself was rejected, just an interruption).
+   NOT YET saved into the repo (e.g. as docs/architecture.svg), NOT YET committed, NOT YET
+   rendered/previewed at all.
+19. NEXT UP — resume the architecture diagram: either re-attempt the Artifact preview, or skip
+   straight to extracting the SVG into docs/architecture.svg in the repo and embedding it in a
+   README (repo currently has NO README.md -- worth creating one, referencing CLAUDE.md's
+   project description). After that: remaining submission assets (~3 min demo video, written
+   description + track selection), dashboard (live dictionary + convergence graph), actually
+   running cloud deployment (paused, see item 15), and the deferred noise-reduction reps
+   (item 12).
 
 ## Preferences
 - Do NOT add a "Co-Authored-By: Claude..." trailer to git commit messages in this repo (user
