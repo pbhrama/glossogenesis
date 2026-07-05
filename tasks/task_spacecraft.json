@@ -1,0 +1,4 @@
+{
+  "id": "task_spacecraft",
+  "description": "A micrometeoroid has damaged the spacecraft. Mission Control wants an orbit-raising burn to reach the rescue station before the next communications blackout; Life Support warns that an aggressive burn threatens the crew. Negotiate a maneuver plan that settles ALL of the following, coining shared words as needed: (1) how large the burn is (its delta-v / how hard it pushes the crew), (2) when it happens relative to the blackout window, (3) how the crew's oxygen and CO2-scrubber margin is protected during and after the burn, (4) an abort condition if a limit is crossed, and (5) who has final authority to trigger the abort. Both agents must explicitly agree before the plan is final."
+}

@@ -27,6 +27,8 @@ class DictionaryStore:
         return cls(path=path, terms={})
 
     def save(self) -> None:
+        if not self.path:
+            return  # in-memory only (e.g. a fresh per-run demo dictionary)
         raw = {k: vars(v) for k, v in self.terms.items()}
         os.makedirs(os.path.dirname(self.path) or ".", exist_ok=True)
         with open(self.path, "w") as f:
