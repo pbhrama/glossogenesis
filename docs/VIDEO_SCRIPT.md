@@ -1,8 +1,10 @@
 # Demo Video Script — Glossogenesis (1–3 min)
 
-Target length: ~2:30. Track: Agent Society. Narration is what you say; [SCREEN] is what to show.
-Record the two scenarios ahead of time (they take a bit as they hit the live API) so you can
-scrub to the good parts, or run them live if you're comfortable with the pauses.
+Target length: ~2:00. Track: Agent Society. Narration is what you say; [SCREEN] is what to show.
+The demo hits the live API, so each round takes a couple seconds — either record it and trim the
+dead air, or let the "thinking" pauses play as natural pacing.
+
+Run the demo with:  `.venv/bin/python run_demo.py --scenario firstcontact`
 
 ---
 
@@ -17,52 +19,36 @@ scrub to the good parts, or run them live if you're comfortable with the pauses.
 
 ---
 
-## 0:20–1:10 — Demo 1: First Contact (the showpiece)
+## 0:20–1:30 — The demo: First Contact
 
-[SCREEN: Terminal, First Contact intro screen. Press Return to start.]
+[SCREEN: Terminal at the First Contact intro. Press Return to start.]
 
-> "Here, two civilizations meet with literally no words in common. One trades energy for the
+> "Two civilizations meet with literally no words in common. One wants to trade energy for the
 > right to mine minerals the other holds sacred. They share nothing — so every term has to be
-> coined and then explicitly clarified before it can be used."
+> invented and then explicitly explained before the other side can use it."
 
-[SCREEN: let the transcript scroll. Point at an early coined term.]
+[SCREEN: let the rounds stream in one at a time. Point at a purple 'coins' tag early on.]
 
-> "Watch round one — they coin 'light-flow' and 'deep-stone.' The other side can't just use
-> those; it has to spend a turn asking what they mean. That question costs a round. That's the
-> whole mechanic: coin a term, it's sealed, the other side pays to unlock it, then it's shared
-> for free."
+> "Watch round one — they coin a word for 'energy' and a word for 'the deep stone.' The purple
+> tag is a brand-new word. But the other side can't just use it — see the cyan tag — it has to
+> spend a whole turn asking what it means. That cost is the whole point: a new word isn't free."
 
-[SCREEN: scroll to the end where it converges.]
+[SCREEN: scroll to the convergence at the end.]
 
-> "By the end they've built a whole shared tongue — 'ancestor-bone,' 'outer-deep,' 'watcher-
-> stone' — and reached an accord in a language neither of them started with."
-
----
-
-## 1:10–1:55 — Demo 2: Spacecraft (shows it's general)
-
-[SCREEN: press Return for demo 2, Spacecraft intro.]
-
-> "Same engine, totally different domain. A damaged spacecraft: Mission Control thinks in orbital
-> mechanics, Life Support thinks in crew survival. Same events, different jargon — so they still
-> have to build shared shorthand, under a deadline before comms blackout."
-
-[SCREEN: let it run; point at the concrete numbers near the end.]
-
-> "And they don't just agree to agree — they settle real constraints: a 2.8g burn, under 110
-> seconds, finishing twelve minutes before blackout, with abort authority assigned. A genuine
-> negotiation, not a rubber stamp."
+> "And by the end they've built an entire shared tongue from scratch — and reached an accord in a
+> language neither of them started with. That's emergent communication, enforced in code, not
+> just asked for in the prompt."
 
 ---
 
-## 1:55–2:20 — The result (why it matters)
+## 1:30–1:55 — The result (why it matters)
 
 [SCREEN: open docs/dashboard.html]
 
-> "The point isn't one conversation — it's that the invented vocabulary pays off. Across five
-> tasks, the agents spend clarification rounds building their dictionary on the first task, and
-> then reuse it for free on every task after. Clarification cost drops from three to zero and
-> stays there. That's a measurable learning curve."
+> "One conversation is a party trick. The real result is that the invented vocabulary pays off.
+> Across five tasks, the agents spend clarification rounds building their dictionary on the first
+> task, then reuse it for free on every task after. Clarification cost drops from three to zero
+> and stays there — a measurable learning curve."
 
 [SCREEN: the learning-curve line chart, then the dictionary table.]
 
@@ -71,19 +57,22 @@ scrub to the good parts, or run them live if you're comfortable with the pauses.
 
 ---
 
-## 2:20–2:30 — Close
+## 1:55–2:05 — Close
 
 [SCREEN: architecture diagram or repo]
 
-> "The constraint is enforced in code, not just asked for in the prompt, there's a real baseline
-> to compare against, and it all runs on Qwen Cloud. Glossogenesis — agents that build their own
-> language, and get faster the more they use it."
+> "Enforced constraint, a real baseline to compare against, all running on Qwen Cloud.
+> Glossogenesis — agents that build their own language, and get faster the more they use it."
 
 ---
 
+## Optional second example
+If you have time and want to show it generalizes, run
+`.venv/bin/python run_demo.py --scenario spacecraft` — Mission Control vs Life Support negotiating
+an emergency burn in orbital-mechanics vs crew-survival jargon. Keep the total under 3:00.
+
 ## Shot checklist
 - [ ] Terminal recording of First Contact (full run, or trimmed to rounds 1–2 + the ending)
-- [ ] Terminal recording of Spacecraft (trimmed to the intro + the numeric agreement at the end)
 - [ ] Screen recording of docs/dashboard.html (stat tile → learning-curve chart → dictionary table)
 - [ ] A glance at docs/architecture.svg
 - [ ] Keep it under 3:00 (hard cap per the rules)

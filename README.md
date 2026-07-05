@@ -36,6 +36,23 @@ Run `python generate_dashboard.py` to regenerate [`docs/dashboard.html`](docs/da
 self-contained dashboard (convergence charts, the learning curve, and the live shared dictionary)
 built from `logs/summary.json` and `dictionary/shared_dictionary.json`.
 
+## Try it — demo scenarios
+
+`run_demo.py` runs a single live negotiation and streams each round as it happens (coined words and
+clarification requests are highlighted inline). Three themes share the exact same controller and
+sealed-term mechanic — only the personas and task change:
+
+```
+python run_demo.py --scenario firstcontact   # two civilizations with NO shared language at all
+python run_demo.py --scenario spacecraft      # Mission Control vs Life Support, clashing jargon
+python run_demo.py --scenario vendor          # the original procurement vs compliance scenario
+```
+
+**First Contact** is the purest form of the idea: the two sides start with zero words in common and
+have to invent and clarify every shared term from scratch to strike a trade. **Spacecraft** shows it
+generalizes — two experts who share a language but not a vocabulary negotiate an emergency maneuver
+under a deadline. Requires `DASHSCOPE_API_KEY` in the environment.
+
 ## Deployment
 
 - **Local (dev)**: `run_negotiation.py` / `run_baseline.py`, dictionary backed by a local JSON
@@ -47,18 +64,26 @@ built from `logs/summary.json` and `dictionary/shared_dictionary.json`.
 ## Repo layout
 
 ```
-agents/                 Agent personas + Qwen client wrappers (pidgin + baseline)
+agents/                 Agent personas + Qwen client wrappers
+  base.py               procurement / compliance (the measured experiment)
+  base_baseline.py      same personas with a full schema known upfront
+  base_firstcontact.py  two civilizations with no shared language (demo)
+  base_spacecraft.py    mission control vs life support (demo)
 controller.py           TurnController — pidgin negotiation loop, seal/reveal enforcement
 controller_baseline.py  BaselineController — structured-schema negotiation loop
 dictionary/             Shared dictionary store (local JSON + Redis-backed variants)
 tasks/                  Seeded negotiation scenarios
 run_negotiation.py      CLI: single pidgin negotiation
 run_baseline.py         CLI: single baseline negotiation
+run_demo.py             CLI: live streamed demo (firstcontact / spacecraft / vendor)
 run_all_tasks.py        Runs both arms across all tasks, writes logs/summary.json
+generate_dashboard.py   Rebuilds docs/dashboard.html from the logs
 fc_handler.py           Alibaba Cloud Function Compute entrypoint
 s.yaml                  Serverless Devs deploy config
 DEPLOY.md               Step-by-step Alibaba Cloud deployment guide
 docs/architecture.svg   Architecture diagram
+docs/dashboard.html     Results dashboard (generated)
+docs/VIDEO_SCRIPT.md    Demo video script
 ```
 
 ## License
