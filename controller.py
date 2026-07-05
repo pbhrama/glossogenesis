@@ -76,7 +76,9 @@ class TurnController:
             speaker, listener = speakers[(round_num - 1) % 2]
 
             if verbose:
-                print(f"[{round_num}] {speaker.name} is thinking...", end="", flush=True)
+                # distinct color per speaker so it reads as a two-sided dialogue
+                name_color = "\033[94m" if speaker is self.agent_a else "\033[92m"
+                print(f"\n{name_color}{speaker.name}\033[0m is thinking...", end="", flush=True)
 
             dict_block = self.dictionary.as_prompt_block()
             msg_to_send = incoming
@@ -134,7 +136,9 @@ class TurnController:
                 if asked:
                     tag += "  \033[36m[asks: " + ", ".join(asked) + "]\033[0m"
                 # \r + \033[K clears the "is thinking..." line, then print the finished round
-                print(f"\r\033[K[{round_num}] \033[1m{speaker.name}\033[0m: {message}{tag}")
+                name_color = "\033[94m" if speaker is self.agent_a else "\033[92m"
+                rnd = f"\033[2m{round_num:>2}\033[0m"  # dim round number
+                print(f"\r\033[K{rnd}  {name_color}\033[1m{speaker.name}\033[0m: {message}{tag}")
 
             incoming = message
 
