@@ -187,8 +187,43 @@ theater. Constraints need teeth or the demo is fake.
   asked to remove it explicitly -- "get rid of any mention of claude").
 
 ## Submission requirements (don't forget)
-- Public repo w/ OSS license visible in About section
-- Proof of Alibaba Cloud deployment (video + code file link)
-- Architecture diagram
-- ~3 min demo video (YouTube/Vimeo/Facebook)
-- Text description + which track
+Source: official "Qwen Cloud Proof of Deployment" 1-pager PDF (user downloaded 2026-07-04,
+in ~/Downloads). Final submission deadline: July 9, 2026, 2 PM PT.
+- Public repo w/ OSS license visible/detectable in About section (DONE)
+- 1-3 min video demo (max) showing the agent in action
+- Architecture diagram (DONE, docs/architecture.svg)
+- Written summary of features/functionality
+- Proof of Alibaba Cloud deployment: per the PDF this is literally a SCREENSHOT of the
+  Alibaba Cloud console "Workbench Overview" showing a running server/instance. NOT a live
+  public endpoint, NOT specifically Function Compute.
+- Judging weights: Innovation & AI Creativity 30% / Technical Depth & Engineering 30% (rewards
+  sophisticated Qwen API use, custom components) / Problem Value & Impact 25% / Presentation &
+  Documentation 15%. Track: Agent Society.
+
+## Deployment pivot (IMPORTANT — supersedes the Function Compute plan)
+The PDF's recommended deploy path for an LLM-API-wrapper agent like this is SAS (Simple
+Application Server / SWAS), NOT Function Compute. SAS = a cheap VM: Create Server -> connect via
+browser Workbench (no AccessKey/SSH key needed, internal auth) -> git clone the public repo ->
+pip install -> run a negotiation -> screenshot the console Workbench Overview for the proof.
+This SIDESTEPS the AccessKey blocker entirely (AccessKey/Serverless Devs CLI were only needed
+for the Function Compute route). The existing fc_handler.py/s.yaml/store_redis.py scaffolding is
+NOT wasted -- keep it as evidence for the Technical Depth criterion -- but the actual proof
+screenshot should come from the simpler SAS path.
+LOGIN BLOCKER: RESOLVED (2026-07-04). The user's Google account DOES federate into the full
+Alibaba Cloud console -- confirmed by opening https://swas.console.alibabacloud.com/ and landing
+in the Simple Application Server console already logged in as "pbhr****@gmail Main Account". No
+AccessKey, no separate signup needed. The earlier confusion was just being on the wrong sites
+(home.qwencloud.com product dashboard, and the aliyun.com mainland login page).
+NEW BLOCKER: cost. User does NOT want to spend out of pocket. A running instance is unavoidable
+for the screenshot proof, so the plan is to cover it with FREE credits:
+  1. Alibaba Cloud Free Trial (https://www.alibabacloud.com/free) -- new Intl accounts usually
+     get a ~$50 voucher and/or free-tier ECS. Check eligibility.
+  2. Hackathon-provided credit codes -- check qwencloud.com/challenge/hackathon and the Discord
+     (#resources / pinned messages).
+When credits are in hand, the remaining steps (all browser, ~5-10 min): switch region to
+Singapore (ap-southeast-1) -> Create Server (cheapest plan, Ubuntu image) -> connect via browser
+Workbench -> git clone https://github.com/pbhrama/glossogenesis -> pip install -r requirements.txt
+-> export DASHSCOPE_API_KEY -> run a negotiation (e.g. python run_negotiation.py) -> screenshot
+the console Workbench Overview showing the running server. That screenshot is the proof.
+DEFERRED per user (2026-07-04): parked deployment again to work on other submission assets
+(demo video / written summary) first.
