@@ -69,24 +69,27 @@ the dashboard shows both.
   `generate_dashboard.py` and shows the convergence charts, the learning curve, and the current
   shared dictionary.
 
-## What this is (and isn't)
+## What makes it different
 
-This is a research demonstration, not a product, and I'd rather be straight about that. Most
-production multi-agent systems today go the opposite direction from what I'm testing: they agree
-on a shared format up front (structured tool-calling, fixed JSON schemas, protocols like MCP),
-which is exactly the baseline arm here. The "let the agents invent their own language" path is the
-interesting question, not the one industry is currently betting on.
+Almost every multi-agent system agrees on a shared format before the agents ever talk: a fixed
+JSON schema, structured tool-calling, a protocol like MCP. Glossogenesis takes that away on
+purpose and asks what the agents do instead. They build their own compressed shorthand, turn by
+turn, only when the budget forces it, and that shorthand carries forward and speeds up every
+negotiation after the one that created it.
 
-What Glossogenesis does is isolate one phenomenon and measure it cleanly: two agents under a
-communication budget, with no shared vocabulary, will build their own compressed shorthand, and
-that shorthand measurably cuts the cost of later negotiations. It's a small, controlled study with
-a real baseline to compare against and honest reporting of what the numbers do and don't show,
-plus a reusable harness (the baseline arm, the multi-task runner, the dashboard) for putting a
-number on it.
+The pieces that make that a real experiment rather than a demo reel:
 
-The reason this is worth studying rather than a solved problem: agent-to-agent communication cost
-is a live issue in real multi-agent systems, and the case where agents from different systems have
-to negotiate meaning without a pre-agreed format is a plausible near-future one. Emergent
-communication between agents is also an established research area. Glossogenesis is a compact,
-measurable entry into that space, aimed squarely at the Agent Society track's focus on multi-agent
-systems that negotiate.
+- **The constraint has teeth.** Sealing is enforced in the controller, not asked for in the
+  prompt, so the model can't shortcut the cost of a new term. Getting this right meant catching a
+  bug where the rule silently never fired.
+- **There's a real control.** The baseline arm runs the same agents and tasks with a full schema
+  handed over up front, so any difference is attributable to the vocabulary constraint alone.
+- **The result is measured, not asserted.** Running both arms across five tasks and tracking
+  clarification cost is what surfaces the learning curve, and the reporting is honest about the
+  noise in raw round counts.
+
+The question underneath it is a live one: as agents from different systems increasingly have to
+deal with each other without a pre-agreed format, can they bootstrap an efficient shared language
+on their own, and does the investment pay off over repeated interactions? Glossogenesis is a
+compact, measurable answer, built for the Agent Society track's focus on multi-agent systems that
+negotiate.
