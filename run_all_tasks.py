@@ -83,7 +83,10 @@ def main():
     parser.add_argument("--summary-out", default="logs/summary.json")
     args = parser.parse_args()
 
-    task_paths = sorted(glob.glob(os.path.join(args.tasks_dir, "*.json")))
+    # Only the numbered experiment tasks (task_01..NN). The themed demo scenarios
+    # (task_firstcontact / task_spacecraft) use their own personas and are NOT part of
+    # the measured pidgin-vs-baseline learning-curve experiment, so they are excluded here.
+    task_paths = sorted(glob.glob(os.path.join(args.tasks_dir, "task_[0-9]*.json")))
     if not task_paths:
         print(f"No task files found in {args.tasks_dir}", file=sys.stderr)
         return 1
