@@ -76,17 +76,14 @@ def main():
         log_path=log_path,
     )
 
-    result = controller.run()
+    print(f"\n--- {args.scenario} negotiation (live) ---\n")
+    result = controller.run(verbose=True)
 
-    print(f"\nScenario: {args.scenario}")
+    print(f"\n--- Result ---")
     print(f"Converged: {result.converged}")
     print(f"Rounds used: {result.rounds_used}")
     print(f"Clarification rounds: {result.clarification_rounds}")
-    print(f"Dictionary size: {result.final_dictionary_size}")
-    print("\n--- Transcript ---")
-    for entry in result.log:
-        tag = " [COINED: " + ", ".join(entry.coined_terms) + "]" if entry.coined_terms else ""
-        print(f"[{entry.round_num}] {entry.speaker}{tag}: {entry.message}")
+    print(f"Shared terms built: {result.final_dictionary_size}")
 
 
 if __name__ == "__main__":

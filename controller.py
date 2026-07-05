@@ -65,7 +65,7 @@ class TurnController:
                 f"round, so only ask if you actually need it; do not guess at the meaning and "
                 f"use the term as if you already knew it.]")
 
-    def run(self) -> NegotiationResult:
+    def run(self, verbose: bool = False) -> NegotiationResult:
         speakers = [(self.agent_a, self.agent_b), (self.agent_b, self.agent_a)]
         incoming = None
         clarification_rounds = 0
@@ -74,6 +74,9 @@ class TurnController:
 
         for round_num in range(1, self.max_rounds + 1):
             speaker, listener = speakers[(round_num - 1) % 2]
+
+            if verbose:
+                print(f"[{round_num}] {speaker.name} is thinking...", end="", flush=True)
 
             dict_block = self.dictionary.as_prompt_block()
             msg_to_send = incoming
@@ -121,6 +124,17 @@ class TurnController:
             )
             log.append(entry)
             self._append_log(entry)
+
+            if verbose:
+                coined = entry.coined_terms
+                asked = [t.strip() for t in asking_about if t.strip()]
+                tag = ""
+                if coined:
+                    tag += "  \033[35m[coins: " + ", ".join(c for c in coined if c) + "]\033[0m"
+                if asked:
+                    tag += "  \033[36m[asks: " + ", ".join(asked) + "]\033[0m"
+                # \r + \033[K clears the "is thinking..." line, then print the finished round
+                print(f"\r\033[K[{round_num}] \033[1m{speaker.name}\033[0m: {message}{tag}")
 
             incoming = message
 
