@@ -69,10 +69,24 @@ the dashboard shows both.
   `generate_dashboard.py` and shows the convergence charts, the learning curve, and the current
   shared dictionary.
 
-## Why it matters
+## What this is (and isn't)
 
-Agents that can compress how they talk to each other under a budget, and then reuse that
-compression later, hold up better than agents pinned to a schema someone wrote by hand. That's a
-useful property for any agent society that has to negotiate at scale. Glossogenesis is a small,
-measurable demonstration that it happens, plus a harness (the baseline arm, the multi-task runner,
-the dashboard) for putting a number on it.
+This is a research demonstration, not a product, and I'd rather be straight about that. Most
+production multi-agent systems today go the opposite direction from what I'm testing: they agree
+on a shared format up front (structured tool-calling, fixed JSON schemas, protocols like MCP),
+which is exactly the baseline arm here. The "let the agents invent their own language" path is the
+interesting question, not the one industry is currently betting on.
+
+What Glossogenesis does is isolate one phenomenon and measure it cleanly: two agents under a
+communication budget, with no shared vocabulary, will build their own compressed shorthand, and
+that shorthand measurably cuts the cost of later negotiations. It's a small, controlled study with
+a real baseline to compare against and honest reporting of what the numbers do and don't show,
+plus a reusable harness (the baseline arm, the multi-task runner, the dashboard) for putting a
+number on it.
+
+The reason this is worth studying rather than a solved problem: agent-to-agent communication cost
+is a live issue in real multi-agent systems, and the case where agents from different systems have
+to negotiate meaning without a pre-agreed format is a plausible near-future one. Emergent
+communication between agents is also an established research area. Glossogenesis is a compact,
+measurable entry into that space, aimed squarely at the Agent Society track's focus on multi-agent
+systems that negotiate.
