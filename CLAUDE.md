@@ -177,10 +177,39 @@ theater. Constraints need teeth or the demo is fake.
    by user. Wrote README.md (repo had none) describing the project, embedding the diagram,
    documenting repo layout and deployment paths. Committed both (commit 92c9925, no co-author
    trailer per preference below). NOT pushed to origin yet -- user said "commit only" this round.
-20. NEXT UP — push README + diagram commit to origin when ready (currently only local). After
-   that: remaining submission assets (~3 min demo video, written description + track selection),
-   dashboard (live dictionary + convergence graph), actually running cloud deployment (paused, see
-   item 15), and the deferred noise-reduction reps (item 12).
+20. DONE — Pushed README + diagram. Built the results dashboard: generate_dashboard.py reads
+   logs/summary.json + dictionary/shared_dictionary.json and renders a self-contained
+   docs/dashboard.html (stat tile 3->0, grouped bar chart of rounds per task pidgin-vs-baseline,
+   line chart of the clarification learning curve, live dictionary table; dark/light, hover
+   tooltips, colors validated via dataviz skill). Template is docs/dashboard_template.html with a
+   __DASHBOARD_DATA__ placeholder. Committed + pushed (commit 45679bf).
+21. DONE — Wrote SUBMISSION.md (the required written summary). Reframed twice per user feedback:
+   first made it less AI-sounding (plain sentences, first person, dropped em-dash/triad tells),
+   then replaced a self-deprecating "what this is/isn't" section with a confident "what makes it
+   different" section (no oversold use case, but not apologetic either). Committed + pushed
+   (commits 40b48b8, fe4d708, 2aa6381).
+22. DONE — Ran a LIVE demo end-to-end (user's real DASHSCOPE key, qwen-plus): task_01 from an
+   empty dict coined "data residency" + 1 clarification, then task_05 reused it for 0
+   clarifications -- the learning curve, live. NOTE: user's API key was pasted into the chat this
+   session; user should ROTATE it in the Qwen dashboard when done. Key stashed only in a
+   gitignored scratchpad env file, never committed.
+23. DONE — Added two "cooler" demo scenarios per user request (they found vendor/compliance dry):
+   agents/base_firstcontact.py (Aurelith energy-weavers vs Khemat stone-tenders, NO shared
+   language at all -- purest form of emergent language, on-theme for the project name) and
+   agents/base_spacecraft.py (Mission-Control orbital-mechanics jargon vs Life-Support
+   crew-survival jargon, shared English but clashing vocab). Tasks tasks/task_firstcontact.json +
+   tasks/task_spacecraft.json each have ~5 contested sub-points to drive MORE rounds. New
+   run_demo.py with a SCENARIOS registry (firstcontact/spacecraft/vendor), fresh in-memory dict
+   per run (added a path=None no-op guard to DictionaryStore.save). Both scenarios needed rule 6
+   added to the personas ("don't set agree=true until every coined term is clarified and every
+   issue settled") -- without it they reached an accord but never converged (leftover sealed
+   terms block the `not self.sealed_terms` convergence check) and looped repeating themselves.
+   After the fix: firstcontact converges ~14 rounds / 9 clarifications, spacecraft ~16 rounds / 5
+   clarifications. Both are gorgeous transcripts. Committed + pushed (commit 6e46da9).
+24. NEXT UP — write the 1-3 min demo video script (timed narration matched to run_demo.py's two
+   scenarios + a dashboard flash). Then: final Devpost submission (track = Agent Society), and the
+   deployment proof screenshot (unblocked -- see deployment pivot notes -- just needs free credits
+   + the SAS/ECS browser steps). Deferred noise-reduction reps (item 12) still optional.
 
 ## Preferences
 - Do NOT add a "Co-Authored-By: Claude..." trailer to git commit messages in this repo (user
