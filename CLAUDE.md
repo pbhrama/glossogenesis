@@ -206,10 +206,29 @@ theater. Constraints need teeth or the demo is fake.
    terms block the `not self.sealed_terms` convergence check) and looped repeating themselves.
    After the fix: firstcontact converges ~14 rounds / 9 clarifications, spacecraft ~16 rounds / 5
    clarifications. Both are gorgeous transcripts. Committed + pushed (commit 6e46da9).
-24. NEXT UP — write the 1-3 min demo video script (timed narration matched to run_demo.py's two
-   scenarios + a dashboard flash). Then: final Devpost submission (track = Agent Society), and the
-   deployment proof screenshot (unblocked -- see deployment pivot notes -- just needs free credits
-   + the SAS/ECS browser steps). Deferred noise-reduction reps (item 12) still optional.
+24. DONE — Wrote docs/VIDEO_SCRIPT.md (~2 min, single First Contact showpiece + dashboard flash;
+   spacecraft noted as optional second example). Added a "Try it -- demo scenarios" section + demo
+   files to README repo layout. Live demo polish: run_demo.py now streams each round live via a
+   new verbose=True flag on TurnController.run() ("<agent> is thinking..." then the message);
+   speakers are color-coded (agent_a blue / agent_b green), coined words purple, asks cyan, dim
+   round numbers, blank line between turns. demo.sh (in scratchpad, NOT in repo) runs First Contact
+   only now (user found two full scenarios "too much"). User loves the look. Committed the code
+   bits (commits 82e9da0, 5e8eb3f, e16fb4d).
+25. DONE-BUT-REVERTED — tried the deferred --reps averaging (item 12) to firm up dashboard numbers.
+   Ran run_all_tasks.py --reps 3 --reset-dictionary. TWO problems: (a) run_all_tasks globbed
+   tasks/*.json and swept in the new demo tasks (firstcontact/spacecraft), running them with the
+   WRONG procurement/compliance agents -> garbage rows; (b) with the dictionary reset, task_01
+   happened to coin only 1 term this time (LLM variance), so the clean committed "3 clarifications
+   -> 0" headline collapsed into a muddier ~0.67 signal. NET: the reps run made the story WEAKER,
+   not tighter. REVERTED summary.json + shared_dictionary.json to the committed versions (the
+   stronger result). Kept two good fixes: generate_dashboard.py is now schema-robust (handles both
+   the flat single-run schema and the averaged _mean schema), and run_all_tasks.py glob is now
+   task_[0-9]*.json so it can never pick up demo scenarios again. LESSON: do NOT re-run reps
+   expecting a cleaner curve; the committed single-run data is the best artifact. Committed
+   (commit edbe643).
+26. NEXT UP — final Devpost submission (track = Agent Society): record the 1-3 min video (only the
+   user can), get the deployment proof screenshot (unblocked -- free credits + SAS/ECS browser
+   steps), submit before July 9 2 PM PT. User should also ROTATE the API key (pasted in chat).
 
 ## Preferences
 - Do NOT add a "Co-Authored-By: Claude..." trailer to git commit messages in this repo (user
