@@ -44,20 +44,21 @@ built from `logs/summary.json` and `dictionary/shared_dictionary.json`.
 
 ## Try it — demo scenarios
 
-`run_demo.py` runs a single live negotiation and streams each round as it happens (coined words and
-clarification requests are highlighted inline). Three themes share the exact same controller and
-sealed-term mechanic — only the personas and task change:
+`run_demo.py` runs a single live negotiation and streams each round as it happens (the two speakers
+are color-coded; coined words and clarification requests are highlighted inline). Every scenario
+shares the exact same controller and sealed-term mechanic — only the personas and task change:
 
 ```
-python run_demo.py --scenario firstcontact   # two civilizations with NO shared language at all
-python run_demo.py --scenario spacecraft      # Mission Control vs Life Support, clashing jargon
-python run_demo.py --scenario vendor          # the original procurement vs compliance scenario
+python run_demo.py --scenario medical    # doctor vs insurance reviewer (care-plan approval)
+python run_demo.py --scenario startup     # founder vs investor (seed-round term sheet)
+python run_demo.py --scenario security    # engineer vs security reviewer (feature launch)
+python run_demo.py --scenario vendor      # procurement vs compliance (the original experiment)
 ```
 
-**First Contact** is the purest form of the idea: the two sides start with zero words in common and
-have to invent and clarify every shared term from scratch to strike a trade. **Spacecraft** shows it
-generalizes — two experts who share a language but not a vocabulary negotiate an emergency maneuver
-under a deadline. Requires `DASHSCOPE_API_KEY` in the environment.
+Each pairs two real professions that describe overlapping decisions in different jargon — clinical
+vs claims, product vs finance, delivery vs security — so under the word budget the agents have to
+coin and clarify shared shorthand to reach an agreement. Requires `DASHSCOPE_API_KEY` in the
+environment.
 
 ## Deployment
 
@@ -73,8 +74,9 @@ under a deadline. Requires `DASHSCOPE_API_KEY` in the environment.
 agents/                 Agent personas + Qwen client wrappers
   base.py               procurement / compliance (the measured experiment)
   base_baseline.py      same personas with a full schema known upfront
-  base_firstcontact.py  two civilizations with no shared language (demo)
-  base_spacecraft.py    mission control vs life support (demo)
+  base_medical.py       doctor vs insurance reviewer (demo)
+  base_startup.py       founder vs investor (demo)
+  base_security.py      engineer vs security reviewer (demo)
 controller.py           TurnController — pidgin negotiation loop, seal/reveal enforcement
 controller_baseline.py  BaselineController — structured-schema negotiation loop
 dictionary/             Shared dictionary store (local JSON + Redis-backed variants)

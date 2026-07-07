@@ -1,0 +1,4 @@
+{
+  "id": "task_security",
+  "description": "An engineer wants to ship a new feature this sprint that collects and displays additional user data. The security reviewer is concerned about the risk. Negotiate a launch plan that settles ALL of the following, coining shared terms as needed: (1) exactly what user data the feature collects and who can see it, (2) whether it launches to everyone at once or via a staged/gated rollout, (3) what security review or testing must happen before launch, (4) what logging and monitoring is added to detect misuse, and (5) the condition under which the launch is rolled back. Both agents must explicitly agree before the launch plan is final."
+}

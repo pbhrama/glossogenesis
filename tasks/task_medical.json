@@ -1,0 +1,4 @@
+{
+  "id": "task_medical",
+  "description": "A physician is requesting approval for a patient: an MRI of the lower spine plus a referral to a neurosurgery specialist, after the patient reported worsening symptoms. The insurance reviewer must decide what the plan will cover. Negotiate an approved care plan that settles ALL of the following, coining shared terms as needed: (1) whether the MRI is approved now or requires a trial of conservative treatment first, (2) whether the specialist referral is in-network or needs a change, (3) what clinical documentation must be submitted to justify approval, (4) how urgent the case is and the timeline for the imaging, and (5) how long the approval stays valid. Both agents must explicitly agree before the plan is final."
+}

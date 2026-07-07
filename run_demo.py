@@ -16,20 +16,26 @@ from dictionary.store import DictionaryStore
 from controller import TurnController
 
 from agents.base import make_procurement_agent, make_compliance_agent
-from agents.base_firstcontact import make_aurelith_agent, make_khemat_agent
-from agents.base_spacecraft import make_control_agent, make_lifesupport_agent
+from agents.base_medical import make_physician_agent, make_insurer_agent
+from agents.base_startup import make_founder_agent, make_investor_agent
+from agents.base_security import make_engineer_agent, make_security_agent
 
 
 SCENARIOS = {
-    "firstcontact": {
-        "task": "tasks/task_firstcontact.json",
-        "agent_a": make_aurelith_agent,
-        "agent_b": make_khemat_agent,
+    "medical": {
+        "task": "tasks/task_medical.json",
+        "agent_a": make_physician_agent,
+        "agent_b": make_insurer_agent,
     },
-    "spacecraft": {
-        "task": "tasks/task_spacecraft.json",
-        "agent_a": make_control_agent,
-        "agent_b": make_lifesupport_agent,
+    "startup": {
+        "task": "tasks/task_startup.json",
+        "agent_a": make_founder_agent,
+        "agent_b": make_investor_agent,
+    },
+    "security": {
+        "task": "tasks/task_security.json",
+        "agent_a": make_engineer_agent,
+        "agent_b": make_security_agent,
     },
     "vendor": {
         "task": "tasks/task_01_vendor_onboarding.json",
@@ -41,7 +47,7 @@ SCENARIOS = {
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--scenario", choices=SCENARIOS.keys(), default="firstcontact")
+    parser.add_argument("--scenario", choices=SCENARIOS.keys(), default="medical")
     parser.add_argument("--task", default=None, help="override the scenario's default task file")
     parser.add_argument("--dictionary", default=None,
                         help="dictionary file to load/seed (default: a fresh empty one per scenario)")
