@@ -108,6 +108,7 @@ class TurnController:
             # gives the "extra round" cost real teeth. A term merely reappearing in conversation
             # text (e.g. because the coiner used it in their own message) must NOT auto-resolve
             # it; a speaker also can't resolve a term they just coined this same turn.
+            resolved_terms = []
             for term in asking_about:
                 term = term.strip()
                 if term not in self.sealed_terms or term in newly_coined:
@@ -115,6 +116,7 @@ class TurnController:
                 entry = self.sealed_terms.pop(term)
                 self.dictionary.add(term, entry["definition"], entry["coined_by"], round_num)
                 clarification_rounds += 1
+                resolved_terms.append(term)
 
             entry = RoundLog(
                 round_num=round_num,
@@ -129,12 +131,13 @@ class TurnController:
 
             if verbose:
                 coined = entry.coined_terms
-                asked = [t.strip() for t in asking_about if t.strip()]
+                # only show asks that actually resolved a real coined term -- a no-op ask
+                # about plain jargon the other side never formally coined is noise.
                 tag = ""
                 if coined:
                     tag += "  \033[35m[coins: " + ", ".join(c for c in coined if c) + "]\033[0m"
-                if asked:
-                    tag += "  \033[36m[asks: " + ", ".join(asked) + "]\033[0m"
+                if resolved_terms:
+                    tag += "  \033[36m[asks: " + ", ".join(resolved_terms) + "]\033[0m"
                 # \r + \033[K clears the "is thinking..." line, then print the finished round
                 name_color = "\033[94m" if speaker is self.agent_a else "\033[92m"
                 rnd = f"\033[2m{round_num:>2}\033[0m"  # dim round number

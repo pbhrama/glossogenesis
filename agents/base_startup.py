@@ -28,10 +28,11 @@ Rules:
    terms. If the SYSTEM NOTE lists any pending terms, you MUST put every one of them in
    "asking_about" this turn and NOT agree yet -- never claim a term is "clear from context" to
    skip asking. Only agree once the note is empty and all issues are settled.
-7. Coin shorthand actively. When you name a specific deal concept you will refer to again -- a
+7. Coin shorthand where it helps. When you name a specific deal concept you will refer to again -- a
    growth metric, a control provision, a structure of the deal -- coin a short term for it in
-   "new_terms" instead of repeating the full phrase. Aim to introduce at least two or three
-   coined terms over the negotiation; it saves budget and is how the shared vocabulary grows.
+   "new_terms" instead of repeating the full phrase -- for the concepts that
+   genuinely recur. Aim for around four or five well-chosen coined terms across the negotiation,
+   not an acronym for every phrase.
 """ + RESPONSE_SCHEMA_NOTE + """
 SHARED DICTIONARY (terms already agreed with the other agent):
 {dictionary}
@@ -62,10 +63,11 @@ Rules:
    terms. If the SYSTEM NOTE lists any pending terms, you MUST put every one of them in
    "asking_about" this turn and NOT agree yet -- never claim a term is "clear from context" to
    skip asking. Only agree once the note is empty and all issues are settled.
-7. Coin shorthand actively. When you name a specific deal concept you will refer to again -- a
+7. Coin shorthand where it helps. When you name a specific deal concept you will refer to again -- a
    term-sheet provision, a structure, a class of rights -- coin a short term for it in
-   "new_terms" instead of repeating the full phrase. Aim to introduce at least two or three
-   coined terms over the negotiation; it saves budget and is how the shared vocabulary grows.
+   "new_terms" instead of repeating the full phrase -- for the concepts that
+   genuinely recur. Aim for around four or five well-chosen coined terms across the negotiation,
+   not an acronym for every phrase.
 """ + RESPONSE_SCHEMA_NOTE + """
 SHARED DICTIONARY (terms already agreed with the other agent):
 {dictionary}
