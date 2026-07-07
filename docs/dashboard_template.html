@@ -75,14 +75,16 @@
   .legend-item { display: flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--text-secondary); }
   .legend-swatch { width: 12px; height: 8px; border-radius: 2px; flex: none; }
 
-  svg text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
-  .axis-label { fill: var(--text-muted); font-size: 10.5px; }
-  .grid-line { stroke: var(--gridline); stroke-width: 1; }
-  .baseline-line { stroke: var(--baseline-axis); stroke-width: 1; }
+  svg { display: block; }
+  svg text { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; text-rendering: geometricPrecision; }
+  .axis-label { fill: var(--text-muted); font-size: 10.5px; font-variant-numeric: tabular-nums; }
+  .grid-line { stroke: var(--gridline); stroke-width: 1; shape-rendering: crispEdges; }
+  .baseline-line { stroke: var(--baseline-axis); stroke-width: 1; shape-rendering: crispEdges; }
   .crosshair-line { stroke: var(--baseline-axis); stroke-width: 1; }
   .ring-stroke { stroke: var(--surface-1); }
-  .value-label { fill: var(--text-secondary); font-size: 11px; font-weight: 700; text-anchor: middle; }
-  .cat-label { fill: var(--text-muted); font-size: 11px; text-anchor: middle; }
+  .value-label { fill: var(--text-secondary); font-size: 11px; font-weight: 700; text-anchor: middle; font-variant-numeric: tabular-nums; }
+  .bar-value { fill: var(--text-muted); font-size: 10.5px; font-weight: 600; text-anchor: middle; font-variant-numeric: tabular-nums; }
+  .cat-label { fill: var(--text-secondary); font-size: 11px; text-anchor: middle; font-weight: 500; }
   .bar-mark { transition: opacity 0.1s ease; }
   .bar-mark.dim { opacity: 0.45; }
 
@@ -205,7 +207,7 @@ function hideTooltip(tooltip) {
   const container = document.getElementById('bar-chart');
   const tasks = DATA.tasks;
   const W = 1000, H = 300;
-  const padL = 34, padR = 20, padT = 20, padB = 40;
+  const padL = 34, padR = 20, padT = 30, padB = 40;
   const plotW = W - padL - padR, plotH = H - padT - padB;
   const maxVal = Math.max(...tasks.map(t => Math.max(t.pidgin_rounds, t.baseline_rounds)));
   const yMax = Math.ceil(maxVal / 2) * 2;
@@ -245,6 +247,7 @@ function hideTooltip(tooltip) {
         v${barH - r}
         h-${barW}
         z" fill="${s.color}"/>`;
+      barsSvg += `<text class="bar-value" x="${x + barW / 2}" y="${y - 6}">${s.val}</text>`;
       hitAreasSvg += `<rect class="hit" data-bar="${id}" data-task="${label}" data-series="${s.key}" data-val="${s.val}"
         x="${x}" y="${padT}" width="${barW}" height="${plotH}" fill="transparent"/>`;
       barIds.push(id);
