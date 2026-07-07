@@ -226,9 +226,24 @@ theater. Constraints need teeth or the demo is fake.
    task_[0-9]*.json so it can never pick up demo scenarios again. LESSON: do NOT re-run reps
    expecting a cleaner curve; the committed single-run data is the best artifact. Committed
    (commit edbe643).
-26. NEXT UP — final Devpost submission (track = Agent Society): record the 1-3 min video (only the
+26. DONE — Replaced the fictional demo scenarios with REAL-WORLD ones (user's call: aliens are
+   confusing out of context, "imagine reading this without knowing the project"). Deleted
+   base_firstcontact.py/base_spacecraft.py + their tasks. Added three real scenarios, each two
+   professions with clashing jargon negotiating a multi-point deal (all tested live, all converge,
+   all instantly legible): agents/base_medical.py (Physician vs Insurance-reviewer, care-plan
+   approval, ~7 rounds), agents/base_startup.py (Founder vs Investor, seed term sheet, ~20 rounds),
+   agents/base_security.py (Engineer vs Security-reviewer, feature launch, ~14 rounds). run_demo.py
+   registry is now medical/startup/security/vendor (default medical). demo.sh (scratchpad) features
+   Doctor-vs-Insurance as the showpiece. Updated VIDEO_SCRIPT.md + README to match. Committed.
+27. DONE — Dashboard crispness pass (user wanted graphs "clean and crisp"): added direct value
+   labels on each bar cap, shape-rendering:crispEdges on gridlines/baseline (sharp 1px lines),
+   text-rendering:geometricPrecision + tabular-nums on figures, stronger category labels, bumped
+   bar-chart top padding for label headroom. Regenerated docs/dashboard.html. Committed.
+28. NEXT UP — final Devpost submission (track = Agent Society): record the 1-3 min video (only the
    user can), get the deployment proof screenshot (unblocked -- free credits + SAS/ECS browser
-   steps), submit before July 9 2 PM PT. User should also ROTATE the API key (pasted in chat).
+   steps; user has NO free-tier option so it'd cost ~$2-8, and is currently chill about possibly
+   getting DQ'd since the project is mainly a resume/portfolio piece), submit before July 9 2 PM PT.
+   User should also ROTATE the API key (pasted in chat).
 
 ## Preferences
 - Do NOT add a "Co-Authored-By: Claude..." trailer to git commit messages in this repo (user
