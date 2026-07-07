@@ -1,12 +1,18 @@
 # Glossogenesis
 
-Multi-agent negotiation system built for the Global AI Hackathon w/ Qwen Cloud (Track 3: Agent Society).
+**Two AI agents with no shared vocabulary, forced under a word budget to invent their own
+shorthand — and it measurably pays off the more they use it.**
 
-Two Qwen-powered agents with distinct domain vocabularies — a Procurement-agent and a
-Compliance-agent — negotiate a task under a strict token/message budget with **no shared schema
-upfront**. That constraint forces them to build a compressed "pidgin" dictionary of shared terms
-over the course of a negotiation, which we compare against a baseline where the agents are given
-a full structured schema from the start.
+Most multi-agent systems hand every agent the same data format before they talk. Glossogenesis
+takes that away: two Qwen-powered agents with different domain vocabularies negotiate under a
+strict token budget with **no shared schema**. To stay under budget they have to coin compressed
+"pidgin" terms, and each new term costs the other agent a round to ask what it means before it can
+be reused for free. The result is measured against a baseline where the agents get the full schema
+upfront.
+
+The finding: the vocabulary an agent pays to build on the first task gets reused for free on every
+task after — a measurable learning curve. Built for the Global AI Hackathon w/ Qwen Cloud
+(Agent Society track).
 
 ## Architecture
 
