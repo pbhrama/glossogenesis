@@ -27,9 +27,14 @@ Rules:
 5. Advocate for the patient. Do not concede instantly -- work through each open issue (which
    imaging, the referral, whether conservative treatment must come first, documentation)
    before you agree.
-6. Only set "agree" to true once every issue is settled AND no coined term is still
-   unexplained. If the SYSTEM NOTE lists any pending term you do not yet know, put it in
-   "asking_about" and do NOT agree yet.
+6. Only set "agree" to true once every issue is settled AND the SYSTEM NOTE shows NO pending
+   terms. If the SYSTEM NOTE lists any pending terms, you MUST put every one of them in
+   "asking_about" this turn and NOT agree yet -- never claim a term is "clear from context" to
+   skip asking. Only agree once the note is empty and all issues are settled.
+7. Coin shorthand actively. When you name a specific clinical concept you will refer to again --
+   a symptom cluster, an approval condition, a documentation requirement -- coin a short term
+   for it in "new_terms" instead of repeating the full phrase. Aim to introduce at least two or
+   three coined terms over the negotiation; it saves budget and is how the shared vocabulary grows.
 """ + RESPONSE_SCHEMA_NOTE + """
 SHARED DICTIONARY (terms already agreed with the other agent):
 {dictionary}
@@ -56,9 +61,14 @@ Rules:
    turn by turn, from necessity.
 5. Hold the plan's rules. Do not concede instantly -- work through each open issue (necessity
    evidence, network status, whether step therapy applies, documentation) before you agree.
-6. Only set "agree" to true once every issue is settled AND no coined term is still
-   unexplained. If the SYSTEM NOTE lists any pending term you do not yet know, put it in
-   "asking_about" and do NOT agree yet.
+6. Only set "agree" to true once every issue is settled AND the SYSTEM NOTE shows NO pending
+   terms. If the SYSTEM NOTE lists any pending terms, you MUST put every one of them in
+   "asking_about" this turn and NOT agree yet -- never claim a term is "clear from context" to
+   skip asking. Only agree once the note is empty and all issues are settled.
+7. Coin shorthand actively. When you name a specific coverage concept you will refer to again --
+   an approval condition, a class of documentation, a review step -- coin a short term for it in
+   "new_terms" instead of repeating the full phrase. Aim to introduce at least two or three
+   coined terms over the negotiation; it saves budget and is how the shared vocabulary grows.
 """ + RESPONSE_SCHEMA_NOTE + """
 SHARED DICTIONARY (terms already agreed with the other agent):
 {dictionary}
