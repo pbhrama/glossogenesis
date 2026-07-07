@@ -239,11 +239,34 @@ theater. Constraints need teeth or the demo is fake.
    labels on each bar cap, shape-rendering:crispEdges on gridlines/baseline (sharp 1px lines),
    text-rendering:geometricPrecision + tabular-nums on figures, stronger category labels, bumped
    bar-chart top padding for label headroom. Regenerated docs/dashboard.html. Committed.
-28. NEXT UP — final Devpost submission (track = Agent Society): record the 1-3 min video (only the
-   user can), get the deployment proof screenshot (unblocked -- free credits + SAS/ECS browser
-   steps; user has NO free-tier option so it'd cost ~$2-8, and is currently chill about possibly
-   getting DQ'd since the project is mainly a resume/portfolio piece), submit before July 9 2 PM PT.
-   User should also ROTATE the API key (pasted in chat).
+28. DONE — Enriched demo term-coining per user request. Added rule 7 ("coin shorthand") to the
+   demo personas so medical/startup build MORE vocabulary. Fixed a resulting convergence bug:
+   more coining left more sealed terms unresolved, so agents looped without converging -> tightened
+   rule 6 across all three demo scenarios ("you MUST ask about every pending term before agreeing,
+   never claim it's clear from context"). Now medical ~5-6 terms, security ~2-3, startup noisy
+   (1-8, hard to pin -- LLM variance; targeted ~5 via rule wording "around four or five" but it
+   swings). Fixed the "PII spam" the user noticed: the verbose demo display was printing
+   [asks: X] for no-op asks about plain jargon (e.g. "PII") that was never formally coined --
+   controller.py now only shows [asks: ...] for asks that actually resolved a real sealed term.
+   Committed.
+29. IMPORTANT — user HIT THEIR QWEN FREE-TIER QUOTA (from my many test-run negotiations this
+   session -- lesson: batch fewer live test runs). No more API calls until it resets (check
+   home.qwencloud.com Billing/Usage for the date; or a Token Plan sk-sp-... key is a separate
+   pool). Everything is verified working; no further testing needed.
+30. DONE — Saved everything durably before the user closed the terminal: created repo-root demo.sh
+   (reads DASHSCOPE_API_KEY from env, runs all three scenarios or one, ./demo.sh [scenario]) and
+   docs/RECORDING.md (macOS Cmd+Shift+5 screen-record steps + suggested flow). The OLD demo scripts
+   lived only in the session scratchpad and are gone -- demo.sh in the repo is the durable
+   replacement. Committed + pushed.
+31. NEXT UP (resume here) — final Devpost submission (track = Agent Society), all pending on the
+   USER: (a) record the 1-3 min video once quota resets -- run ./demo.sh, screen-record per
+   docs/RECORDING.md, narrate from docs/VIDEO_SCRIPT.md, show docs/dashboard.html for results;
+   (b) deployment proof screenshot (unblocked but costs ~$2-8, user is chill about DQ risk since
+   it's a resume/portfolio piece); (c) submit before July 9 2 PM PT; (d) ROTATE the API key
+   (pasted in chat this session). Repo is otherwise COMPLETE and clean -- code, three real-world
+   demo scenarios, dashboard, architecture diagram, README, SUBMISSION.md, video script all done
+   and pushed. Startup demo term-count is the only slightly-loose end (noisy 1-8) if user wants it
+   tuned later, but it converges fine.
 
 ## Preferences
 - Do NOT add a "Co-Authored-By: Claude..." trailer to git commit messages in this repo (user
